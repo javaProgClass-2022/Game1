@@ -1,2 +1,3 @@
-# Game1
+# Game:
 Kunala, Hetul, Lucas
+
