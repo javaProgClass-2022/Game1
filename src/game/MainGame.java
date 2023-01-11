@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-public class MainGame {
+public class MainGame implements ActionListener {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -30,7 +32,6 @@ public class MainGame {
 	/***** constants *****/
 	final static int PANW = 1450;
 	final static int PANH = 800;
-	final static int TIMERSPEED = 10;
 
 	final static BufferedImage bkg1 = loadImage("Photos/BackGround1.jpg");
 	final static BufferedImage peashooter = loadImage("Photos/peashooter.png");
@@ -52,7 +53,6 @@ public class MainGame {
 	MainGame() {
 		createAndShowGUI();
 		startTimer();
-		board[0][0] = new Peashooter();
 	}
 
 	void createAndShowGUI() {
@@ -67,16 +67,15 @@ public class MainGame {
 	}
 
 	void startTimer() {
-//		Timer timer = new Timer(TIMERSPEED, this);
-//		timer.setInitialDelay(1000);
-//		timer.start();
+		Timer timer = new Timer(1, this);
+		timer.setInitialDelay(5000);
+		timer.start();
 	}
 
 	class DrawingPanel extends JPanel {
 		DrawingPanel() {
-			this.setBackground(Color.LIGHT_GRAY);
-			this.setPreferredSize(new Dimension(PANW, PANH)); // remember that the JPanel size is more accurate than
-																// JFrame.
+			this.setBackground(new Color(225, 198, 153));
+			this.setPreferredSize(new Dimension(PANW, PANH));
 		}
 
 		@Override
@@ -86,6 +85,9 @@ public class MainGame {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			// gets background image after running try catch
 			g.drawImage(bkg1, 0, 150, getWidth(), 650, null);
+			g.drawImage(peashooter, 250, 0, 150, 150, null);
+			g.drawImage(snowpea, 425, 0, 190, 150, null);
+			g.drawImage(sunflower, 640, 0, 150, 150, null);
 		}
 	}
 
@@ -100,5 +102,12 @@ public class MainGame {
 					JOptionPane.ERROR_MESSAGE);
 		}
 		return img;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// DEBUG
+		// System.out.println(t + " " + level);
+		t++;
 	}
 }
