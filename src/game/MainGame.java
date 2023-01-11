@@ -1,25 +1,24 @@
 package game;
 
-/* Add comments here
- * 
- */
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-
-
 public class MainGame {
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				new MainGame();
@@ -28,55 +27,73 @@ public class MainGame {
 	}
 
 	/***** constants *****/
-	final static int PANW = 900;
+	final static int PANW = 1450;
 	final static int PANH = 800;
 	final static int TIMERSPEED = 10;
-	
-	
+
+	final static BufferedImage bkg1 = loadImage("Photos/BackGround1.jpg");
+	final static BufferedImage peashooter = loadImage("Photos/peashooter.png");
+	final static BufferedImage potatomine = loadImage("Photos/potato-mine.png");
+	final static BufferedImage repeater = loadImage("Photos/repeater.png");
+	final static BufferedImage snowpea = loadImage("Photos/snow-pea.png");
+	final static BufferedImage sunflower = loadImage("Photos/sunflower.png");
+	final static BufferedImage wallnut = loadImage("Photos/wall-nut.png");
+
+	Plant board[][] = new Plant[5][9];
+
 	/***** instance variables (global) *****/
-	DrawingPanel drPanel = new DrawingPanel();
-	
-	//constructor
+	DrawingPanel panel = new DrawingPanel();
+
+	// constructor
 	MainGame() {
 		createAndShowGUI();
 		startTimer();
 	}
-	
+
 	void createAndShowGUI() {
 		JFrame frame = new JFrame("Awesome game!");
-		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
-		
 
-		frame.add(drPanel);
+		frame.add(panel);
 		frame.pack();
-		frame.setLocationRelativeTo( null );		
-		frame.setVisible(true);		
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 	}
-	
-	void startTimer() {		
+
+	void startTimer() {
 //		Timer timer = new Timer(TIMERSPEED, this);
 //		timer.setInitialDelay(1000);
 //		timer.start();
 	}
-	
+
 	class DrawingPanel extends JPanel {
 		DrawingPanel() {
 			this.setBackground(Color.LIGHT_GRAY);
-			this.setPreferredSize(new Dimension(PANW,PANH));  //remember that the JPanel size is more accurate than JFrame.
+			this.setPreferredSize(new Dimension(PANW, PANH)); // remember that the JPanel size is more accurate than
+																// JFrame.
 		}
-		
+
 		@Override
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			
-			g2.setStroke(new BasicStroke(2));			
-			g.drawString("Here is your drawing panel", 100,100);
-			
-			g.drawOval(300, 300, 200,50);		
+			// gets background image after running try catch
+			g.drawImage(bkg1, 0, 150, getWidth(), 650, null);
 		}
-	}	
-}
+	}
 
+	// if image not found (via try/catch), throw error message
+	static BufferedImage loadImage(String filename) {
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File(filename));
+		} catch (IOException e) {
+			System.out.println(e.toString());
+			JOptionPane.showMessageDialog(null, "An image failed to load:" + filename, "ERROR",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		return img;
+	}
+}
