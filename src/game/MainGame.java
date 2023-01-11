@@ -9,6 +9,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -34,12 +35,15 @@ public class MainGame {
 	final static BufferedImage bkg1 = loadImage("Photos/BackGround1.jpg");
 	final static BufferedImage peashooter = loadImage("Photos/peashooter.png");
 	final static BufferedImage potatomine = loadImage("Photos/potato-mine.png");
-	final static BufferedImage repeater = loadImage("Photos/repeater.png");
 	final static BufferedImage snowpea = loadImage("Photos/snow-pea.png");
 	final static BufferedImage sunflower = loadImage("Photos/sunflower.png");
 	final static BufferedImage wallnut = loadImage("Photos/wall-nut.png");
 
-	Plant board[][] = new Plant[5][9];
+	static Plant board[][] = new Plant[5][9];
+
+	static int t = 0;
+	static int level = 1;
+	ArrayList<Zombie> zList = new ArrayList<Zombie>();
 
 	/***** instance variables (global) *****/
 	DrawingPanel panel = new DrawingPanel();
@@ -48,6 +52,7 @@ public class MainGame {
 	MainGame() {
 		createAndShowGUI();
 		startTimer();
+		board[0][0] = new Peashooter();
 	}
 
 	void createAndShowGUI() {

@@ -1,5 +1,5 @@
 package game;
 
-abstract class Bullet {
+abstract class Pea {
 	int damage, velocity;
 }
