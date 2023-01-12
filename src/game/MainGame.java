@@ -36,26 +36,37 @@ public class MainGame implements ActionListener {
 
 	final static BufferedImage bkg1 = loadImage("Photos/BackGround1.jpg");
 	final static BufferedImage sunIMG = loadImage("Photos/sun.png");
-	
-	//plant photos
+
+	// plant photos
 	final static BufferedImage peashooter = loadImage("Photos/peashooter.png");
 	final static BufferedImage potatomine = loadImage("Photos/potato-mine.png");
 	final static BufferedImage snowpea = loadImage("Photos/snow-pea.png");
 	final static BufferedImage sunflower = loadImage("Photos/sunflower.png");
 	final static BufferedImage wallnut = loadImage("Photos/wall-nut.png");
-	
-	//zombie photos
+
+	// zombie photos
 	final static BufferedImage basicZ = loadImage("Photos/basicZ.png");
 	final static BufferedImage fastZ = loadImage("Photos/fastZ.png");
 	final static BufferedImage bruteZ = loadImage("Photos/bruteZ.png");
 
-	static Plant board[][] = new Plant[5][9];
 	static String sun = "MONIS";
 
 	static int t = 0;
 	static int level = 1;
-	int zCount = level*10; //amount of zombies in each level
+	int zCount = level * 10; // amount of zombies in each level
 	ArrayList<Zombie> zList = new ArrayList<Zombie>();
+
+	static Plant board[][] = new Plant[5][9];
+	// for the 2d array:
+	// X RANGE: 260 - 1030, 9 columns each 86 wide
+	// Y RANGE: 230 - 770, 5 rows each 108 tall
+	// these values make sure that the images look okay in every space
+	static final int lowX = 255;
+	static final int highX = 1030;
+	static final int lowY = 220;
+	static final int highY = 770;
+	static final int colW = 85;
+	static final int rowH = 108;
 
 	/***** instance variables (global) *****/
 	DrawingPanel panel = new DrawingPanel();
@@ -94,21 +105,35 @@ public class MainGame implements ActionListener {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			// gets background image after running try catch
+
+			// sets up base menu and game board
 			g.drawImage(bkg1, 0, 150, getWidth(), 650, null);
 			g.drawImage(peashooter, 280, 0, 120, 120, null);
 			g.setFont(new Font("Montferrato", Font.PLAIN, 18));
 			g.drawString("100", 330, 142);
-			g.drawImage(snowpea, 460, 0, 160, 120, null);
-			g.drawString("150", 530, 142);
+			g.drawImage(snowpea, 480, 0, 120, 120, null);
+			g.drawString("175", 530, 142);
 			g.drawImage(sunflower, 675, 0, 120, 120, null);
 			g.drawString("50", 725, 142);
 			g.drawImage(wallnut, 875, 0, 105, 120, null);
 			g.drawString("50", 920, 142);
 			g.drawImage(potatomine, 1075, 0, 120, 120, null);
-			g.drawString("250", 1125, 142);
+			g.drawString("25", 1125, 142);
 			g.drawImage(sunIMG, 10, 0, 150, 150, null);
 			g.drawString(sun, 170, 85);
+
+			drawPlants(g);
+		}
+
+		void drawPlants(Graphics g) {
+			for (int y = 0; y < board.length; y++) {
+				for (int x = 0; x < board[y].length; x++) {
+					// if there is a plant on the tile, it'll display it
+					if (board[y][x] != null) {
+						g.drawImage(snowpea, lowX + (x * colW), lowY + (y * rowH), colW, rowH, null);
+					}
+				}
+			}
 		}
 	}
 
@@ -127,8 +152,6 @@ public class MainGame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// DEBUG
-		// System.out.println(t + " " + level);
 		t++;
 	}
 }
