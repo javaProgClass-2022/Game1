@@ -40,6 +40,7 @@ public class MainGame implements ActionListener {
 	final static BufferedImage snowpea = loadImage("Photos/snow-pea.png");
 	final static BufferedImage sunflower = loadImage("Photos/sunflower.png");
 	final static BufferedImage wallnut = loadImage("Photos/wall-nut.png");
+	final static BufferedImage sun = loadImage("Photos/sun.png");
 
 	static Plant board[][] = new Plant[5][9];
 
@@ -87,7 +88,7 @@ public class MainGame implements ActionListener {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			// gets background image after running try catch
 			g.drawImage(bkg1, 0, 150, getWidth(), 650, null);
-			g.drawImage(peashooter, 280, 0, 120, 120, null);
+			g.drawImage(sun, 280, 0, 120, 120, null);
 			g.setFont(new Font("Montferrato", Font.PLAIN, 18));
 			g.drawString("100", 330, 142);
 			g.drawImage(snowpea, 460, 0, 160, 120, null);
