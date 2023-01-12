@@ -3,6 +3,7 @@ package game;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -85,9 +86,17 @@ public class MainGame implements ActionListener {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			// gets background image after running try catch
 			g.drawImage(bkg1, 0, 150, getWidth(), 650, null);
-			g.drawImage(peashooter, 250, 0, 150, 150, null);
-			g.drawImage(snowpea, 425, 0, 190, 150, null);
-			g.drawImage(sunflower, 640, 0, 150, 150, null);
+			g.drawImage(peashooter, 280, 0, 120, 120, null);
+			g.setFont(new Font("Montferrato", Font.PLAIN, 18));
+			g.drawString("100", 330, 142);
+			g.drawImage(snowpea, 460, 0, 160, 120, null);
+			g.drawString("150", 530, 142);
+			g.drawImage(sunflower, 675, 0, 120, 120, null);
+			g.drawString("50", 725, 142);
+			g.drawImage(wallnut, 875, 0, 105, 120, null);
+			g.drawString("200", 920, 142);
+			g.drawImage(potatomine, 1075, 0, 120, 120, null);
+			g.drawString("250", 1125, 142);
 		}
 	}
 
