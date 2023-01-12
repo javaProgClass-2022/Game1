@@ -35,13 +35,22 @@ public class MainGame implements ActionListener {
 	final static int PANH = 800;
 
 	final static BufferedImage bkg1 = loadImage("Photos/BackGround1.jpg");
+	final static BufferedImage sunIMG = loadImage("Photos/sun.png");
+	
+	//plant photos
 	final static BufferedImage peashooter = loadImage("Photos/peashooter.png");
 	final static BufferedImage potatomine = loadImage("Photos/potato-mine.png");
 	final static BufferedImage snowpea = loadImage("Photos/snow-pea.png");
 	final static BufferedImage sunflower = loadImage("Photos/sunflower.png");
 	final static BufferedImage wallnut = loadImage("Photos/wall-nut.png");
+	
+	//zombie photos
+	final static BufferedImage basicZ = loadImage("Photos/basicZ.png");
+	final static BufferedImage fastZ = loadImage("Photos/fastZ.png");
+	final static BufferedImage bruteZ = loadImage("Photos/bruteZ.png");
 
 	static Plant board[][] = new Plant[5][9];
+	static String sun = "MONIS";
 
 	static int t = 0;
 	static int level = 1;
@@ -95,9 +104,11 @@ public class MainGame implements ActionListener {
 			g.drawImage(sunflower, 675, 0, 120, 120, null);
 			g.drawString("50", 725, 142);
 			g.drawImage(wallnut, 875, 0, 105, 120, null);
-			g.drawString("200", 920, 142);
+			g.drawString("50", 920, 142);
 			g.drawImage(potatomine, 1075, 0, 120, 120, null);
 			g.drawString("250", 1125, 142);
+			g.drawImage(sunIMG, 10, 0, 150, 150, null);
+			g.drawString(sun, 170, 85);
 		}
 	}
 

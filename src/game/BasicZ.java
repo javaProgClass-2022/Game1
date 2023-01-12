@@ -6,5 +6,6 @@ class BasicZ extends Zombie{
 		health = 20;
 		speed = 1;
 		damage = 1;
+		img = MainGame.basicZ;
 	}
 }
