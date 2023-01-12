@@ -31,7 +31,6 @@ public class MainGame implements ActionListener {
 	/***** constants *****/
 	final static int PANW = 1450;
 	final static int PANH = 800;
-
 	final static BufferedImage bkg1 = loadImage("Photos/BackGround1.jpg");
 	final static BufferedImage peashooter = loadImage("Photos/peashooter.png");
 	final static BufferedImage potatomine = loadImage("Photos/potato-mine.png");

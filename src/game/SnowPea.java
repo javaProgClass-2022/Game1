@@ -1,13 +1,13 @@
 package game;
 
-class Peashooter extends Plant{
-	
+class SnowPea extends Plant {
+
 	static final int shootInterval = 60;
 	
-	Peashooter(){
+	SnowPea(){
 		int shootTime = 0;
 		health = 10;
-		img = MainGame.loadImage("Photos/peashooter.png");
+		img = MainGame.loadImage("Photos/snow-pea.png");
 		
 		// Shoots every second, after which it resets interval between shots
 		if (shootTime == shootInterval) {
@@ -30,11 +30,12 @@ class Peashooter extends Plant{
 	void takeDamage() {
 		// FIXME Get zombie damage and reduce by this number, on intersects?
 		// this.health - zombie.damage;
+		if (this.health <= 0) {
+			this.die();
+		}
 	}
-
 	@Override
 	void die() {
-		// TODO
+		// TODO Auto-generated method stub
 	}
-
 }
