@@ -43,6 +43,7 @@ public class MainGame implements ActionListener {
 	final static BufferedImage sun = loadImage("Photos/sun.png");
 
 	static Plant board[][] = new Plant[5][9];
+	static String money = "MONIS";
 
 	static int t = 0;
 	static int level = 1;
@@ -88,7 +89,7 @@ public class MainGame implements ActionListener {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			// gets background image after running try catch
 			g.drawImage(bkg1, 0, 150, getWidth(), 650, null);
-			g.drawImage(sun, 280, 0, 120, 120, null);
+			g.drawImage(peashooter, 280, 0, 120, 120, null);
 			g.setFont(new Font("Montferrato", Font.PLAIN, 18));
 			g.drawString("100", 330, 142);
 			g.drawImage(snowpea, 460, 0, 160, 120, null);
@@ -96,9 +97,11 @@ public class MainGame implements ActionListener {
 			g.drawImage(sunflower, 675, 0, 120, 120, null);
 			g.drawString("50", 725, 142);
 			g.drawImage(wallnut, 875, 0, 105, 120, null);
-			g.drawString("200", 920, 142);
+			g.drawString("50", 920, 142);
 			g.drawImage(potatomine, 1075, 0, 120, 120, null);
 			g.drawString("250", 1125, 142);
+			g.drawImage(sun, 10, 0, 150, 150, null);
+			g.drawString(money, 170, 85);
 		}
 	}
 
