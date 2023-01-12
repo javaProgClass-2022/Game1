@@ -39,6 +39,7 @@ public class MainGame implements ActionListener {
 	final static BufferedImage snowpea = loadImage("Photos/snow-pea.png");
 	final static BufferedImage sunflower = loadImage("Photos/sunflower.png");
 	final static BufferedImage wallnut = loadImage("Photos/wall-nut.png");
+	final static BufferedImage sun = loadImage("Photos/sun.png");
 
 	static Plant board[][] = new Plant[5][9];
 
