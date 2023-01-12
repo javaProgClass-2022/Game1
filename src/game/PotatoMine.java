@@ -19,7 +19,7 @@ class PotatoMine extends Plant {
 	}
 
 	@Override
-	void shoot() { // Do nothing,
+	void shoot() { // Do nothing, as potato mines do not shoot
 	}
 
 	@Override
