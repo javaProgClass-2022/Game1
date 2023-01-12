@@ -35,7 +35,7 @@ public class MainGame implements ActionListener {
 	final static int PANH = 800;
 
 	final static BufferedImage bkg1 = loadImage("Photos/BackGround1.jpg");
-	final static BufferedImage sun = loadImage("Photos/sun.png");
+	final static BufferedImage sunIMG = loadImage("Photos/sun.png");
 	
 	//plant photos
 	final static BufferedImage peashooter = loadImage("Photos/peashooter.png");
@@ -50,7 +50,7 @@ public class MainGame implements ActionListener {
 	final static BufferedImage bruteZ = loadImage("Photos/bruteZ.png");
 
 	static Plant board[][] = new Plant[5][9];
-	static String money = "MONIS";
+	static String sun = "MONIS";
 
 	static int t = 0;
 	static int level = 1;
@@ -107,8 +107,8 @@ public class MainGame implements ActionListener {
 			g.drawString("50", 920, 142);
 			g.drawImage(potatomine, 1075, 0, 120, 120, null);
 			g.drawString("250", 1125, 142);
-			g.drawImage(sun, 10, 0, 150, 150, null);
-			g.drawString(money, 170, 85);
+			g.drawImage(sunIMG, 10, 0, 150, 150, null);
+			g.drawString(sun, 170, 85);
 		}
 	}
 
