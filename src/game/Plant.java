@@ -8,5 +8,6 @@ abstract class Plant {
 	BufferedImage img;
 
 	abstract void shoot();
+
 	abstract void takeDamage();
 }
