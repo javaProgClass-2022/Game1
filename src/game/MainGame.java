@@ -35,12 +35,19 @@ public class MainGame implements ActionListener {
 	final static int PANH = 800;
 
 	final static BufferedImage bkg1 = loadImage("Photos/BackGround1.jpg");
+	final static BufferedImage sun = loadImage("Photos/sun.png");
+	
+	//plant photos
 	final static BufferedImage peashooter = loadImage("Photos/peashooter.png");
 	final static BufferedImage potatomine = loadImage("Photos/potato-mine.png");
 	final static BufferedImage snowpea = loadImage("Photos/snow-pea.png");
 	final static BufferedImage sunflower = loadImage("Photos/sunflower.png");
 	final static BufferedImage wallnut = loadImage("Photos/wall-nut.png");
-	final static BufferedImage sun = loadImage("Photos/sun.png");
+	
+	//zombie photos
+	final static BufferedImage basicZ = loadImage("Photos/basicZ.png");
+	final static BufferedImage fastZ = loadImage("Photos/fastZ.png");
+	final static BufferedImage bruteZ = loadImage("Photos/bruteZ.png");
 
 	static Plant board[][] = new Plant[5][9];
 	static String money = "MONIS";
