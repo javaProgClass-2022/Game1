@@ -3,7 +3,6 @@ package game;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -45,6 +44,7 @@ public class MainGame implements ActionListener {
 
 	static int t = 0;
 	static int level = 1;
+	int zCount = level*10; //amount of zombies in each level
 	ArrayList<Zombie> zList = new ArrayList<Zombie>();
 
 	/***** instance variables (global) *****/
@@ -86,17 +86,9 @@ public class MainGame implements ActionListener {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			// gets background image after running try catch
 			g.drawImage(bkg1, 0, 150, getWidth(), 650, null);
-			g.drawImage(peashooter, 280, 0, 120, 120, null);
-			g.setFont(new Font("Montferrato", Font.PLAIN, 18));
-			g.drawString("100", 330, 142);
-			g.drawImage(snowpea, 460, 0, 160, 120, null);
-			g.drawString("150", 530, 142);
-			g.drawImage(sunflower, 675, 0, 120, 120, null);
-			g.drawString("50", 725, 142);
-			g.drawImage(wallnut, 875, 0, 105, 120, null);
-			g.drawString("200", 920, 142);
-			g.drawImage(potatomine, 1075, 0, 120, 120, null);
-			g.drawString("250", 1125, 142);
+			g.drawImage(peashooter, 250, 0, 150, 150, null);
+			g.drawImage(snowpea, 425, 0, 190, 150, null);
+			g.drawImage(sunflower, 640, 0, 150, 150, null);
 		}
 	}
 
@@ -118,5 +110,53 @@ public class MainGame implements ActionListener {
 		// DEBUG
 		// System.out.println(t + " " + level);
 		t++;
+		initializeZombies();
+		
+		//when the amount of zombies are 0, it increases the level and reinstates the zombies
+		//TODO this is placeholder code until we figure out what will happen when the level is completed
+		if(zCount < 0) {
+			level++;
+			zCount = level*10;
+		}
+	}
+	
+	
+	public void initializeZombies() {
+		
+		//creates a zombie every 2 seconds
+		if(t%2000 == 0 && zCount >= 0) {
+			
+			//random number to figure out which type based on the level
+			int type = (int)(Math.random()*level + 1);
+			int row = (int)(Math.random()*5);
+			Zombie c;
+			
+			//creates the zombies based on the type
+			if(type == 1) {
+				c = new BasicZ();
+			} if(type == 2) {
+				c = new FastZ();
+				
+			} else {
+				c = new BruteZ();
+			}
+			c.x = PANW;
+			c.y = PANH*row/5;
+			zList.add(c);
+			
+			//decreases the zombie count when one is created
+			zCount--;
+		}
+		
+		//going through each zombie and moving them
+		for(int i = 0; i < zList.size(); i++) {
+			Zombie z = zList.get(i);
+			z.x--;
+			
+			//if the zombie is dead, then it removes it from the list
+			if(z.health <= 0) {
+				zList.remove(z);
+			}
+		}
 	}
 }
