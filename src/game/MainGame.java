@@ -105,12 +105,13 @@ public class MainGame implements ActionListener {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			// gets background image after running try catch
+
+			// sets up base menu and game board
 			g.drawImage(bkg1, 0, 150, getWidth(), 650, null);
 			g.drawImage(peashooter, 280, 0, 120, 120, null);
 			g.setFont(new Font("Montferrato", Font.PLAIN, 18));
 			g.drawString("100", 330, 142);
-			g.drawImage(snowpea, 460, 0, 160, 120, null);
+			g.drawImage(snowpea, 480, 0, 120, 120, null);
 			g.drawString("175", 530, 142);
 			g.drawImage(sunflower, 675, 0, 120, 120, null);
 			g.drawString("50", 725, 142);
@@ -127,8 +128,9 @@ public class MainGame implements ActionListener {
 		void drawPlants(Graphics g) {
 			for (int y = 0; y < board.length; y++) {
 				for (int x = 0; x < board[y].length; x++) {
+					// if there is a plant on the tile, it'll display it
 					if (board[y][x] != null) {
-						g.drawImage(board[y][x].img, lowX + (x * colW), lowY + (y * rowH), colW, rowH, null);
+						g.drawImage(snowpea, lowX + (x * colW), lowY + (y * rowH), colW, rowH, null);
 					}
 				}
 			}
@@ -150,8 +152,6 @@ public class MainGame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// DEBUG
-		// System.out.println(t + " " + level);
 		t++;
 	}
 }
