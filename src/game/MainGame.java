@@ -2,6 +2,7 @@ package game;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -10,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -17,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-public class MainGame {
+public class MainGame implements ActionListener {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -29,7 +32,6 @@ public class MainGame {
 	/***** constants *****/
 	final static int PANW = 1450;
 	final static int PANH = 800;
-	final static int TIMERSPEED = 10;
 
 	final static BufferedImage bkg1 = loadImage("Photos/BackGround1.jpg");
 	final static BufferedImage peashooter = loadImage("Photos/peashooter.png");
@@ -38,7 +40,12 @@ public class MainGame {
 	final static BufferedImage sunflower = loadImage("Photos/sunflower.png");
 	final static BufferedImage wallnut = loadImage("Photos/wall-nut.png");
 
-	Plant board[][] = new Plant[5][9];
+	static Plant board[][] = new Plant[5][9];
+
+	static int t = 0;
+	static int level = 1;
+	int zCount = level*10; //amount of zombies in each level
+	ArrayList<Zombie> zList = new ArrayList<Zombie>();
 
 	/***** instance variables (global) *****/
 	DrawingPanel panel = new DrawingPanel();
@@ -61,8 +68,8 @@ public class MainGame {
 	}
 
 	void startTimer() {
-		Timer timer = new Timer(TIMERSPEED, new TimerListener());
-		timer.setInitialDelay(1000);
+		Timer timer = new Timer(1, this);
+		timer.setInitialDelay(5000);
 		timer.start();
 	}
 
@@ -70,9 +77,8 @@ public class MainGame {
 		private static final long serialVersionUID = 4421045963969125932L;
 
 		DrawingPanel() {
-			this.setBackground(Color.LIGHT_GRAY);
-			this.setPreferredSize(new Dimension(PANW, PANH)); // remember that the JPanel size is more accurate than
-																// JFrame.
+			this.setBackground(new Color(225, 198, 153));
+			this.setPreferredSize(new Dimension(PANW, PANH));
 		}
 
 		@Override
@@ -81,6 +87,17 @@ public class MainGame {
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.drawImage(bkg1, 0, 150, getWidth(), 650, null);
+			g.drawImage(peashooter, 280, 0, 120, 120, null);
+			g.setFont(new Font("Montferrato", Font.PLAIN, 18));
+			g.drawString("100", 330, 142);
+			g.drawImage(snowpea, 460, 0, 160, 120, null);
+			g.drawString("150", 530, 142);
+			g.drawImage(sunflower, 675, 0, 120, 120, null);
+			g.drawString("50", 725, 142);
+			g.drawImage(wallnut, 875, 0, 105, 120, null);
+			g.drawString("200", 920, 142);
+			g.drawImage(potatomine, 1075, 0, 120, 120, null);
+			g.drawString("250", 1125, 142);
 		}
 	}
 
@@ -97,10 +114,10 @@ public class MainGame {
 		return img;
 	}
 
-	private class TimerListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO add TimerListener things
-		}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// DEBUG
+		// System.out.println(t + " " + level);
+		t++;
 	}
 }
