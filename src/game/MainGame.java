@@ -42,10 +42,13 @@ public class MainGame implements ActionListener {
 
 	static Plant board[][] = new Plant[5][9];
 
+	static boolean playerStatus = true;
 	static int t = 0;
 	static int level = 1;
 	int zCount = level*10; //amount of zombies in each level
 	ArrayList<Zombie> zList = new ArrayList<Zombie>();
+	
+	ArrayList<Lawnmower> mowList = new ArrayList<Lawnmower>();
 
 	/***** instance variables (global) *****/
 	DrawingPanel panel = new DrawingPanel();
@@ -53,6 +56,7 @@ public class MainGame implements ActionListener {
 	// constructor
 	MainGame() {
 		createAndShowGUI();
+		lawnMowerCreation();
 		startTimer();
 	}
 
@@ -111,20 +115,60 @@ public class MainGame implements ActionListener {
 		// System.out.println(t + " " + level);
 		t++;
 		initializeZombies();
-		
+		triggerMower();
 		//when the amount of zombies are 0, it increases the level and reinstates the zombies
 		//TODO this is placeholder code until we figure out what will happen when the level is completed
-		if(zCount < 0) {
+		if(zCount < 0 && playerStatus) {
 			level++;
 			zCount = level*10;
 		}
 	}
 	
+	public void triggerMower() {
+		for(int i = 0; i < mowList.size(); i++) {
+			Lawnmower mower = mowList.get(i);
+			for(int j = 0; j < zList.size(); j++) {
+				Zombie zomb = zList.get(j);
+				int lawnrow = i;
+				//TODO change when we get the right height of the garden
+				int zombrow = zomb.y*5/PANH;
+				if(zombrow == lawnrow && zomb.x >= 60) {
+					mower.triggered = true;
+				}
+			}
+		}
+		for(int i = 0; i < mowList.size(); i++) {
+			Lawnmower mower = mowList.get(i);
+			if(mower.triggered) {
+				mower.x+=mower.speed;
+				for(int j = 0; j < zList.size(); j++) {
+					Zombie zomb = zList.get(j);
+					//TODO, add a rect class to all other classes
+//					if(mower.intersects(zomb)) zList.remove(zomb);
+				}
+				if(mower.x > PANW) {
+					mowList.remove(mower);
+				}
+			}
+		}
+	}
+	
+	public void lawnMowerCreation() {
+		
+		for(int i = 0; i < 5; i++) {
+			Lawnmower m = new Lawnmower();
+			//TODO, change to the height of the garden instead of screen
+			m.y = PANH*i/5;
+			mowList.add(m);
+			
+			//TODO add image for the lawnmower
+		}
+	}
 	
 	public void initializeZombies() {
 		
 		//creates a zombie every 2 seconds
-		if(t%2000 == 0 && zCount >= 0) {
+		if(t%500 == 0 && zCount >= 0) {
 			
 			//random number to figure out which type based on the level
 			int type = (int)(Math.random()*level + 1);
