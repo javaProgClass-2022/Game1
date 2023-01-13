@@ -174,7 +174,7 @@ public class MainGame implements ActionListener {
 				Zombie zomb = zList.get(j);
 				int lawnrow = i;
 				// TODO change when we get the right height of the garden
-				int zombrow = zomb.y * 5 / PANH;
+				int zombrow = (zomb.y - lowY)/rowH;
 				if (zombrow == lawnrow && zomb.x >= 60) {
 					mower.triggered = true;
 				}
@@ -201,7 +201,7 @@ public class MainGame implements ActionListener {
 		for (int i = 0; i < 5; i++) {
 			Lawnmower m = new Lawnmower();
 			// TODO, change to the height of the garden instead of screen
-			m.y = PANH * i / 5;
+			m.y = lowY+i*rowH;
 			mowList.add(m);
 
 			// TODO add image for the lawnmower
@@ -229,7 +229,7 @@ public class MainGame implements ActionListener {
 				c = new BruteZ();
 			}
 			c.x = PANW;
-			c.y = PANH * row / 5;
+			c.y = lowY+row*rowH;
 			zList.add(c);
 
 			// decreases the zombie count when one is created
