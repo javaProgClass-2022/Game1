@@ -30,12 +30,5 @@ class SnowPea extends Plant {
 	void takeDamage() {
 		// FIXME Get zombie damage and reduce by this number, on intersects?
 		// this.health - zombie.damage;
-		if (this.health <= 0) {
-			this.die();
-		}
-	}
-	@Override
-	void die() {
-		// TODO Auto-generated method stub
 	}
 }

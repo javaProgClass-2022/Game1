@@ -26,12 +26,5 @@ class PotatoMine extends Plant {
 	void takeDamage() {
 		// TODO get zombie
 		// zombie.health - damage();
-		if (this.health <= 0) {
-			this.die();
-		}
-	}
-
-	@Override
-	void die() {
 	}
 }

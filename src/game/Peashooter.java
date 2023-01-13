@@ -31,10 +31,4 @@ class Peashooter extends Plant{
 		// FIXME Get zombie damage and reduce by this number, on intersects?
 		// this.health - zombie.damage;
 	}
-
-	@Override
-	void die() {
-		// TODO
-	}
-
 }
