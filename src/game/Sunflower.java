@@ -16,7 +16,8 @@ class Sunflower extends Plant {
 
 	@Override
 	void shoot() { // Creates sun instead of shooting anything
-		new Sun();
+		// TODO Make sun
+		// new Sun();
 	}
 
 	@Override
