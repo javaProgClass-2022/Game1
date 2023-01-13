@@ -175,7 +175,7 @@ public class MainGame implements ActionListener {
 				int lawnrow = i;
 				// TODO change when we get the right height of the garden
 				int zombrow = (zomb.y - lowY)/rowH;
-				if (zombrow == lawnrow && zomb.x >= 60) {
+				if (zombrow == lawnrow && zomb.x <= 60) {
 					mower.triggered = true;
 				}
 			}
