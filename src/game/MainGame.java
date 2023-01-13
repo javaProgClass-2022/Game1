@@ -12,7 +12,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -32,7 +31,6 @@ public class MainGame implements ActionListener {
 	/***** constants *****/
 	final static int PANW = 1450;
 	final static int PANH = 800;
-
 	final static BufferedImage bkg1 = loadImage("Photos/BackGround1.jpg");
 	final static BufferedImage peashooter = loadImage("Photos/peashooter.png");
 	final static BufferedImage potatomine = loadImage("Photos/potato-mine.png");
@@ -114,14 +112,6 @@ public class MainGame implements ActionListener {
 		// DEBUG
 		// System.out.println(t + " " + level);
 		t++;
-		initializeZombies();
-		triggerMower();
-		//when the amount of zombies are 0, it increases the level and reinstates the zombies
-		//TODO this is placeholder code until we figure out what will happen when the level is completed
-		if(zCount < 0 && playerStatus) {
-			level++;
-			zCount = level*10;
-		}
 	}
 	
 	public void triggerMower() {

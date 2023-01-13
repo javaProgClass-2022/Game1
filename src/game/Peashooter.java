@@ -9,12 +9,8 @@ class Peashooter extends Plant{
 	}
 
 	@Override
-	void shoot() {
-		
+	void die() {
+		// TODO
 	}
 
-	@Override
-	void takeDamage() {
-		
-	}
 }
