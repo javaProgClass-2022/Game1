@@ -129,7 +129,7 @@ public class MainGame implements ActionListener {
 				for (int x = 0; x < board[y].length; x++) {
 					// if there is a plant on the tile, it'll display it
 					if (board[y][x] != null) {
-						g.drawImage(snowpea, lowX + (x * colW), lowY + (y * rowH), colW, rowH, null);
+						g.drawImage(board[y][x].img, lowX + (x * colW), lowY + (y * rowH), colW, rowH, null);
 					}
 				}
 			}
