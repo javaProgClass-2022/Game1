@@ -49,7 +49,7 @@ public class MainGame implements ActionListener {
 	static boolean playerStatus = true;
 	static int t = 0;
 	static int level = 1;
-	int zCount = level * 10; // amount of zombies in each level
+	int zCount = level*10; //amount of zombies in each level
 	ArrayList<Zombie> zList = new ArrayList<Zombie>();
 	
 	ArrayList<Lawnmower> mowList = new ArrayList<Lawnmower>();
@@ -151,7 +151,17 @@ public class MainGame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// DEBUG
+		// System.out.println(t + " " + level);
 		t++;
+		initializeZombies();
+		triggerMower();
+		//when the amount of zombies are 0, it increases the level and reinstates the zombies
+		//TODO this is placeholder code until we figure out what will happen when the level is completed
+		if(zCount < 0 && playerStatus) {
+			level++;
+			zCount = level*10;
+		}
 	}
 	
 	public void triggerMower() {
