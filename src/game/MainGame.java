@@ -183,8 +183,7 @@ public class MainGame implements ActionListener {
 				mower.x+=mower.speed;
 				for(int j = 0; j < zList.size(); j++) {
 					Zombie zomb = zList.get(j);
-					//TODO, add a rect class to all other classes
-//					if(mower.intersects(zomb)) zList.remove(zomb);
+					if(mower.intersects(zomb)) zList.remove(zomb);
 				}
 				if(mower.x > PANW) {
 					mowList.remove(mower);
