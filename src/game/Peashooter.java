@@ -13,4 +13,16 @@ class Peashooter extends Plant{
 		// TODO
 	}
 
+	@Override
+	void shoot() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	void takeDamage() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -3,6 +3,7 @@ package game;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -47,11 +48,11 @@ public class MainGame implements ActionListener {
 	final static BufferedImage bruteZ = loadImage("Photos/bruteZ.png");
 
 	static boolean playerStatus = true;
+	static int sun;
 	static int t = 0;
 	static int level = 1;
-	int zCount = level*10; //amount of zombies in each level
+	int zCount = level * 10; // amount of zombies in each level
 	ArrayList<Zombie> zList = new ArrayList<Zombie>();
-	
 	ArrayList<Lawnmower> mowList = new ArrayList<Lawnmower>();
 
 	static Plant board[][] = new Plant[5][9];
@@ -119,7 +120,7 @@ public class MainGame implements ActionListener {
 			g.drawString("25", 1125, 142);
 			g.drawImage(potatomine, 1075, 0, 120, 120, null);
 			g.drawImage(sunIMG, 10, 0, 150, 150, null);
-			g.drawString(sun, 170, 85);
+			g.drawString((sun + ""), 170, 85);
 
 			drawPlants(g);
 		}
@@ -156,88 +157,92 @@ public class MainGame implements ActionListener {
 		t++;
 		initializeZombies();
 		triggerMower();
-		//when the amount of zombies are 0, it increases the level and reinstates the zombies
-		//TODO this is placeholder code until we figure out what will happen when the level is completed
-		if(zCount < 0 && playerStatus) {
+		// when the amount of zombies are 0, it increases the level and reinstates the
+		// zombies
+		// TODO this is placeholder code until we figure out what will happen when the
+		// level is completed
+		if (zCount < 0 && playerStatus) {
 			level++;
-			zCount = level*10;
+			zCount = level * 10;
 		}
 	}
-	
+
 	public void triggerMower() {
-		for(int i = 0; i < mowList.size(); i++) {
+		for (int i = 0; i < mowList.size(); i++) {
 			Lawnmower mower = mowList.get(i);
-			for(int j = 0; j < zList.size(); j++) {
+			for (int j = 0; j < zList.size(); j++) {
 				Zombie zomb = zList.get(j);
 				int lawnrow = i;
-				//TODO change when we get the right height of the garden
-				int zombrow = zomb.y*5/PANH;
-				if(zombrow == lawnrow && zomb.x >= 60) {
+				// TODO change when we get the right height of the garden
+				int zombrow = zomb.y * 5 / PANH;
+				if (zombrow == lawnrow && zomb.x >= 60) {
 					mower.triggered = true;
 				}
 			}
 		}
-		for(int i = 0; i < mowList.size(); i++) {
+		for (int i = 0; i < mowList.size(); i++) {
 			Lawnmower mower = mowList.get(i);
-			if(mower.triggered) {
-				mower.x+=mower.speed;
-				for(int j = 0; j < zList.size(); j++) {
+			if (mower.triggered) {
+				mower.x += mower.speed;
+				for (int j = 0; j < zList.size(); j++) {
 					Zombie zomb = zList.get(j);
-					if(mower.intersects(zomb)) zList.remove(zomb);
+					if (mower.intersects(zomb))
+						zList.remove(zomb);
 				}
-				if(mower.x > PANW) {
+				if (mower.x > PANW) {
 					mowList.remove(mower);
 				}
 			}
 		}
 	}
-	
+
 	public void lawnMowerCreation() {
-		
-		for(int i = 0; i < 5; i++) {
+
+		for (int i = 0; i < 5; i++) {
 			Lawnmower m = new Lawnmower();
-			//TODO, change to the height of the garden instead of screen
-			m.y = PANH*i/5;
+			// TODO, change to the height of the garden instead of screen
+			m.y = PANH * i / 5;
 			mowList.add(m);
-			
-			//TODO add image for the lawnmower
+
+			// TODO add image for the lawnmower
 		}
 	}
-	
+
 	public void initializeZombies() {
-		
-		//creates a zombie every 2 seconds
-		if(t%500 == 0 && zCount >= 0) {
-			
-			//random number to figure out which type based on the level
-			int type = (int)(Math.random()*level + 1);
-			int row = (int)(Math.random()*5);
+
+		// creates a zombie every 2 seconds
+		if (t % 500 == 0 && zCount >= 0) {
+
+			// random number to figure out which type based on the level
+			int type = (int) (Math.random() * level + 1);
+			int row = (int) (Math.random() * 5);
 			Zombie c;
-			
-			//creates the zombies based on the type
-			if(type == 1) {
+
+			// creates the zombies based on the type
+			if (type == 1) {
 				c = new BasicZ();
-			} if(type == 2) {
+			}
+			if (type == 2) {
 				c = new FastZ();
-				
+
 			} else {
 				c = new BruteZ();
 			}
 			c.x = PANW;
-			c.y = PANH*row/5;
+			c.y = PANH * row / 5;
 			zList.add(c);
-			
-			//decreases the zombie count when one is created
+
+			// decreases the zombie count when one is created
 			zCount--;
 		}
-		
-		//going through each zombie and moving them
-		for(int i = 0; i < zList.size(); i++) {
+
+		// going through each zombie and moving them
+		for (int i = 0; i < zList.size(); i++) {
 			Zombie z = zList.get(i);
 			z.x--;
-			
-			//if the zombie is dead, then it removes it from the list
-			if(z.health <= 0) {
+
+			// if the zombie is dead, then it removes it from the list
+			if (z.health <= 0) {
 				zList.remove(z);
 			}
 		}
