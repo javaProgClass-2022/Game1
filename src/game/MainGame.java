@@ -1,6 +1,5 @@
 package game;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -34,6 +33,7 @@ public class MainGame implements ActionListener {
 	final static int PANH = 800;
 	final static BufferedImage bkg1 = loadImage("Photos/BackGround1.jpg");
 	final static BufferedImage sunIMG = loadImage("Photos/sun.png");
+	final static BufferedImage lawnMower = loadImage("Photos/lawnmower.png");
 
 	// plant photos
 	final static BufferedImage peashooter = loadImage("Photos/peashooter.png");
@@ -48,12 +48,12 @@ public class MainGame implements ActionListener {
 	final static BufferedImage bruteZ = loadImage("Photos/bruteZ.png");
 
 	static boolean playerStatus = true;
-	static int sun;
+	static int sun = 100;
 	static int t = 0;
 	static int level = 1;
-	int zCount = level * 10; // amount of zombies in each level
-	ArrayList<Zombie> zList = new ArrayList<Zombie>();
-	ArrayList<Lawnmower> mowList = new ArrayList<Lawnmower>();
+	static int zCount = level * 10; // amount of zombies in each level
+	static ArrayList<Zombie> zList = new ArrayList<Zombie>();
+	static Lawnmower mowList[] = new Lawnmower[5];
 
 	static Plant board[][] = new Plant[5][9];
 	// for the 2d array:
@@ -95,6 +95,8 @@ public class MainGame implements ActionListener {
 	}
 
 	class DrawingPanel extends JPanel {
+		private static final long serialVersionUID = 1L;
+
 		DrawingPanel() {
 			this.setBackground(new Color(225, 198, 153));
 			this.setPreferredSize(new Dimension(PANW, PANH));
@@ -120,9 +122,33 @@ public class MainGame implements ActionListener {
 			g.drawString("25", 1125, 142);
 			g.drawImage(potatomine, 1075, 0, 120, 120, null);
 			g.drawImage(sunIMG, 10, 0, 150, 150, null);
+			g.setFont(new Font("Montferrato", Font.BOLD, 36));
 			g.drawString((sun + ""), 170, 85);
 
 			drawPlants(g);
+			drawMovers(g);
+			drawZombies(g);
+		}
+
+		void drawZombies(Graphics g) {
+			for (int x = 0; x < zList.size(); x++) {
+				g.drawImage(zList.get(x).img, zList.get(x).x, zList.get(x).y, zList.get(x).width, zList.get(x).height,
+						null);
+			}
+		}
+
+		void drawMovers(Graphics g) {
+			for (int x = 0; x < mowList.length; x++) {
+				if (mowList[x] != null) {
+					if (mowList[x].x >= PANW) {
+						mowList[x] = null;
+					}
+					if (mowList[x] != null) {
+						g.drawImage(mowList[x].img, mowList[x].x, mowList[x].y, Lawnmower.width, Lawnmower.height,
+								null);
+					}
+				}
+			}
 		}
 
 		void drawPlants(Graphics g) {
@@ -152,8 +178,6 @@ public class MainGame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// DEBUG
-		// System.out.println(t + " " + level);
 		t++;
 		initializeZombies();
 		triggerMower();
@@ -165,46 +189,46 @@ public class MainGame implements ActionListener {
 			level++;
 			zCount = level * 10;
 		}
+		panel.repaint();
 	}
 
 	public void triggerMower() {
-		for (int i = 0; i < mowList.size(); i++) {
-			Lawnmower mower = mowList.get(i);
-			for (int j = 0; j < zList.size(); j++) {
-				Zombie zomb = zList.get(j);
-				int lawnrow = i;
-				// TODO change when we get the right height of the garden
-				int zombrow = (zomb.y - lowY)/rowH;
-				if (zombrow == lawnrow && zomb.x >= 60) {
-					mower.triggered = true;
+		for (int i = 0; i < mowList.length; i++) {
+			if (mowList[i] != null) {
+				Lawnmower mower = mowList[i];
+				for (int j = 0; j < zList.size(); j++) {
+					Zombie zomb = zList.get(j);
+					int lawnrow = i;
+					// zomb.y is the higher range of the space between zombie's y coordinate and the
+					// rest is the lowest y coordinate a zombie can be at
+					int zombrow = (zomb.y - lowY - rowH + zomb.height) / rowH;
+					if (zombrow == lawnrow && zomb.x <= 170) {
+						mower.triggered = true;
+					}
 				}
 			}
 		}
-		for (int i = 0; i < mowList.size(); i++) {
-			Lawnmower mower = mowList.get(i);
-			if (mower.triggered) {
-				mower.x += mower.speed;
-				for (int j = 0; j < zList.size(); j++) {
-					Zombie zomb = zList.get(j);
-					if (mower.intersects(zomb))
-						zList.remove(zomb);
-				}
-				if (mower.x > PANW) {
-					mowList.remove(mower);
+		for (int i = 0; i < mowList.length; i++) {
+			if (mowList[i] != null) {
+				Lawnmower mower = mowList[i];
+				if (mower.triggered) {
+					mower.x += mower.speed;
+					for (int j = 0; j < zList.size(); j++) {
+						Zombie zomb = zList.get(j);
+						if (mower.intersects(zomb))
+							zList.remove(zomb);
+					}
 				}
 			}
 		}
 	}
 
 	public void lawnMowerCreation() {
-
 		for (int i = 0; i < 5; i++) {
 			Lawnmower m = new Lawnmower();
-			// TODO, change to the height of the garden instead of screen
-			m.y = lowY+i*rowH;
-			mowList.add(m);
-
-			// TODO add image for the lawnmower
+			m.x = 170 - i * 2;
+			m.y = lowY + i * rowH;
+			mowList[i] = m;
 		}
 	}
 
@@ -221,15 +245,13 @@ public class MainGame implements ActionListener {
 			// creates the zombies based on the type
 			if (type == 1) {
 				c = new BasicZ();
-			}
-			if (type == 2) {
+			} else if (type == 2) {
 				c = new FastZ();
-
 			} else {
 				c = new BruteZ();
 			}
 			c.x = PANW;
-			c.y = lowY+row*rowH;
+			c.y = lowY + row * rowH + rowH - c.height;
 			zList.add(c);
 
 			// decreases the zombie count when one is created
