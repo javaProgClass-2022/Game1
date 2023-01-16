@@ -1,8 +1,16 @@
 package game;
 
 class Pea {
-	final static int damage = 5;
-	final static int velocity = 10;
-
-	// TODO Find when pea intersects zombie and deal damage
+	static int damage = 5;
+	static int velocity = 10;
+	int x, y;
+	
+	// Peashooter loads normal pea. snowpea loads icy pea
+	BufferedImage img;
+	
+	// TODO Attach timer to this somehow
+	void movePea() {
+		this.x =+ velocity;
+		this.y =+ velocity;
+	}
 }
