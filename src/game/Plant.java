@@ -8,5 +8,4 @@ abstract class Plant {
 
 	abstract void shoot();
 	abstract void takeDamage();
-	abstract void die();
 }
