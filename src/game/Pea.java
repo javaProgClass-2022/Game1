@@ -1,5 +1,7 @@
 package game;
 
+import java.awt.image.BufferedImage;
+
 class Pea {
 	static int damage = 5;
 	static int velocity = 10;

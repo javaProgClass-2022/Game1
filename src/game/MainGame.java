@@ -95,14 +95,7 @@ public class MainGame implements ActionListener {
 			g.drawImage(wallnut, 875, 0, 105, 120, null);
 			g.drawString("200", 920, 142);
 			g.drawImage(potatomine, 1075, 0, 120, 120, null);
-<<<<<<<
 			g.drawString("250", 1125, 142);
-=======
-			g.drawImage(sunIMG, 10, 0, 150, 150, null);
-			g.drawString(sun, 170, 85);
-
-			drawPlants(g);
->>>>>>>
 		}
 	}
 
