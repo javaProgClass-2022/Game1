@@ -204,6 +204,7 @@ public class MainGame implements ActionListener {
 					int zombrow = (zomb.y - lowY - rowH + zomb.height) / rowH;
 					if (zombrow == lawnrow && zomb.x <= 170) {
 						mower.triggered = true;
+						zList.remove(j);
 					}
 				}
 			}
@@ -215,8 +216,10 @@ public class MainGame implements ActionListener {
 					mower.x += mower.speed;
 					for (int j = 0; j < zList.size(); j++) {
 						Zombie zomb = zList.get(j);
-						if (mower.intersects(zomb))
+						if (mower.intersects(zomb)) {
+							System.out.println("INTERSECTS");
 							zList.remove(zomb);
+						}
 					}
 				}
 			}
@@ -235,7 +238,7 @@ public class MainGame implements ActionListener {
 	public void initializeZombies() {
 
 		// creates a zombie every 2 seconds
-		if (t % 500 == 0 && zCount >= 0) {
+		if (t % 200 == 0 && zCount >= 0) {
 
 			// random number to figure out which type based on the level
 			int type = (int) (Math.random() * level + 1);
@@ -261,7 +264,7 @@ public class MainGame implements ActionListener {
 		// going through each zombie and moving them
 		for (int i = 0; i < zList.size(); i++) {
 			Zombie z = zList.get(i);
-			z.x--;
+			z.x -= z.speed;
 
 			// if the zombie is dead, then it removes it from the list
 			if (z.health <= 0) {
