@@ -1,5 +1,5 @@
 package game;
 
-abstract class Pea {
-	int damage, velocity;
+class Pea {
+	int damage = 5, velocity = 10;
 }
