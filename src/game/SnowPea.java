@@ -28,7 +28,7 @@ class SnowPea extends Plant {
 
 	@Override
 	void takeDamage() {
-		// FIXME Get zombie damage and reduce by this number, on intersects?
-		// this.health - zombie.damage;
+		// FIXME Get zombie damage, on intersects?
+		//this.health =- zombie.damage;
 	}
 }

@@ -1,15 +1,28 @@
 package game;
 
 class Wallnut extends Plant {
-	
-	Wallnut(){
-		health = 40;
-		img = MainGame.loadImage("Photos/wall-nut.png");
 
+	Wallnut() {
+		health = 42;
+
+		checkHealth();
+		
 		// TODO Find zombie that intersects
 //		if (zombie.intersects this) {
 //			this.takeDamage();
 //		}
+	}
+
+	private void checkHealth() {
+		if (this.health > 20) {
+			img = MainGame.loadImage("Photos/wall-nut.png");
+		}
+		if (this.health <= 20) {
+			img = MainGame.loadImage("Photos/WallnutExtra/WallnutDamage1.png");
+		}
+		if (this.health <= 10) {
+			img = MainGame.loadImage("Photos/WallnutExtra/WallnutDamage2.png");
+		}
 	}
 
 	@Override
