@@ -2,6 +2,7 @@ package game;
 
 class Sunflower extends Plant {
 	
+	// Generates sun every 5 seconds, can be reduced
 	static final int shootInterval = 540;
 	
 	Sunflower(){
