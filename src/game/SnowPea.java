@@ -23,12 +23,12 @@ class SnowPea extends Plant {
 
 	@Override
 	void shoot() {
-		new Pea();
+		new PeaProjectile();
 	}
 
 	@Override
 	void takeDamage() {
 		// FIXME Get zombie damage, on intersects?
-		//this.health =- zombie.damage;
+		// this.health =- zombie.damage;
 	}
 }
