@@ -6,7 +6,7 @@ class Wallnut extends Plant {
 		health = 42;
 
 		checkHealth();
-		
+
 		// TODO Find zombie that intersects
 //		if (zombie.intersects this) {
 //			this.takeDamage();
@@ -26,12 +26,14 @@ class Wallnut extends Plant {
 	}
 
 	@Override
-	void shoot() { // Do nothing, wallnuts do not shoot
-	}
-
-	@Override
 	void takeDamage() {
 		// FIXME Get zombie damage and reduce by this number, on intersects?
 		// this.health - zombie.damage;
+	}
+
+	@Override
+	void shoot(int row, int col) {
+		// TODO Auto-generated method stub
+
 	}
 }

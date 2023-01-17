@@ -19,12 +19,13 @@ class PotatoMine extends Plant {
 	}
 
 	@Override
-	void shoot() { // Do nothing, as potato mines do not shoot
-	}
-
-	@Override
 	void takeDamage() {
 		// TODO get zombie
 		// zombie.health - damage();
+	}
+
+	@Override
+	void shoot(int row, int col) {
+		// TODO Auto-generated method stub
 	}
 }
