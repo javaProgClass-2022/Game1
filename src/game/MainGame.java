@@ -134,6 +134,7 @@ public class MainGame implements ActionListener {
 			for (int x = 0; x < zList.size(); x++) {
 				g.drawImage(zList.get(x).img, zList.get(x).x, zList.get(x).y, zList.get(x).width, zList.get(x).height,
 						null);
+				g.drawRect(zList.get(x).x, zList.get(x).y, zList.get(x).width, zList.get(x).height);
 			}
 		}
 
@@ -146,6 +147,7 @@ public class MainGame implements ActionListener {
 					if (mowList[x] != null) {
 						g.drawImage(mowList[x].img, mowList[x].x, mowList[x].y, Lawnmower.width, Lawnmower.height,
 								null);
+						g.drawRect(mowList[x].x, mowList[x].y, Lawnmower.width, Lawnmower.height);
 					}
 				}
 			}
@@ -212,11 +214,12 @@ public class MainGame implements ActionListener {
 		for (int i = 0; i < mowList.length; i++) {
 			if (mowList[i] != null) {
 				Lawnmower mower = mowList[i];
+				System.out.print("" + mower.x + " " + i + ".");
 				if (mower.triggered) {
 					mower.x += mower.speed;
 					for (int j = 0; j < zList.size(); j++) {
 						Zombie zomb = zList.get(j);
-						if (mower.intersects(zomb)) {
+						if (mower.x == zomb.x - zomb.width + mower.width) {
 							System.out.println("INTERSECTS");
 							zList.remove(zomb);
 						}
@@ -224,6 +227,7 @@ public class MainGame implements ActionListener {
 				}
 			}
 		}
+		System.out.println();
 	}
 
 	public void lawnMowerCreation() {
