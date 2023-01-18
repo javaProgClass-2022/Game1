@@ -5,10 +5,13 @@ import java.awt.image.BufferedImage;
 
 public class Lawnmower extends Rectangle {
 
-	static int width = 90, height = 100;
-	int speed = 1;
-	int x, y;
+	int speed = 5;
 	boolean triggered = false;
 	BufferedImage img = MainGame.lawnMower;
+
+	Lawnmower() {
+		width = 90;
+		height = 100;
+	}
 
 }
