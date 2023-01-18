@@ -250,10 +250,10 @@ public class MainGame implements ActionListener {
 					mower.x += mower.speed;
 					for (int j = 0; j < zList.size(); j++) {
 						Zombie zomb = zList.get(j);
-						if (mower.intersects(zomb)) {
-							System.out.println("INTERSECTS");
-							zList.remove(zomb);
-						}
+						// if ((zomb.rowIsIn == i) && mower.intersects(zomb)) {
+						// System.out.println("INTERSECTS");
+						// zList.remove(zomb);
+						// }
 					}
 				}
 			}
@@ -304,6 +304,8 @@ public class MainGame implements ActionListener {
 			if (z.health <= 0) {
 				zList.remove(z);
 			}
+			System.out.println(z.rowIsIn);
 		}
+		System.out.println();
 	}
 }

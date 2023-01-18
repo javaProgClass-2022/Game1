@@ -7,4 +7,5 @@ abstract class Zombie extends Rectangle {
 	int health, damage;
 	double speed;
 	BufferedImage img;
+	double rowIsIn;
 }

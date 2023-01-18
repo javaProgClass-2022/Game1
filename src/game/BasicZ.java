@@ -1,7 +1,7 @@
 package game;
 
-class BasicZ extends Zombie{
-	
+class BasicZ extends Zombie {
+
 	BasicZ() {
 		health = 20;
 		speed = 1;
@@ -9,5 +9,6 @@ class BasicZ extends Zombie{
 		height = 170;
 		width = 100;
 		img = MainGame.basicZ;
+		rowIsIn = (MainGame.highY - y) / height;
 	}
 }
