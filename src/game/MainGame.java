@@ -250,10 +250,10 @@ public class MainGame implements ActionListener {
 					mower.x += mower.speed;
 					for (int j = 0; j < zList.size(); j++) {
 						Zombie zomb = zList.get(j);
-						// if ((zomb.rowIsIn == i) && mower.intersects(zomb)) {
-						// System.out.println("INTERSECTS");
-						// zList.remove(zomb);
-						// }
+						if ((zomb.rowIsIn == i) && mower.intersects(zomb)) {
+							System.out.println("INTERSECTS");
+							zList.remove(zomb);
+						}
 					}
 				}
 			}
@@ -281,11 +281,11 @@ public class MainGame implements ActionListener {
 
 			// creates the zombies based on the type
 			if (type == 1) {
-				c = new BasicZ();
+				c = new BasicZ(row);
 			} else if (type == 2) {
-				c = new FastZ();
+				c = new FastZ(row);
 			} else {
-				c = new BruteZ();
+				c = new BruteZ(row);
 			}
 			c.x = PANW;
 			c.y = lowY + row * rowH + rowH - c.height;
