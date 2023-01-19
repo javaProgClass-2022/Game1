@@ -1,18 +1,14 @@
 package game;
 
 class Wallnut extends Plant {
+	private static final long serialVersionUID = -3255394878231110366L;
 
 	Wallnut() {
 		health = 42;
-
 		checkHealth();
-
-		// TODO Find zombie that intersects
-//		if (zombie.intersects this) {
-//			this.takeDamage();
-//		}
 	}
 
+	// Changes images depending on health
 	private void checkHealth() {
 		if (this.health > 20) {
 			img = MainGame.loadImage("Photos/wall-nut.png");
@@ -26,14 +22,11 @@ class Wallnut extends Plant {
 	}
 
 	@Override
-	void takeDamage() {
-		// FIXME Get zombie damage and reduce by this number, on intersects?
-		// this.health - zombie.damage;
+	void takeDamage(Zombie zomb) {
+		this.health -= zomb.damage;
 	}
 
 	@Override
-	void shoot(int row, int col) {
-		// TODO Auto-generated method stub
-
+	void shoot(int row, int col) { // Do nothing, wall-nuts do not shoot
 	}
 }

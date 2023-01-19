@@ -1,18 +1,13 @@
 package game;
 
 class Peashooter extends Plant {
-
-	static final int shootInterval = 60;
+	private static final long serialVersionUID = 4371182833899103646L;
+	
 	static int side = 25;
 
 	Peashooter() {
 		health = 10;
 		img = MainGame.loadImage("Photos/peashooter.png");
-
-		// TODO Find zombie that intersects
-//		if (zombie.intersects this) {
-//			this.health-zombie.damage;
-//		}
 	}
 
 	@Override
@@ -22,8 +17,7 @@ class Peashooter extends Plant {
 	}
 
 	@Override
-	void takeDamage() {
-		// FIXME Get zombie damage, on intersects?
-		// this.health =- zombie.damage;
+	void takeDamage(Zombie zomb) {
+		this.health -= zomb.damage;
 	}
 }

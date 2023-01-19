@@ -1,31 +1,22 @@
 package game;
 
 class PotatoMine extends Plant {
+	private static final long serialVersionUID = -3369321461276148885L;
 
-	static final int chargeTime = 2000;
 	static final int damage = 10000;
 
 	PotatoMine() {
-		int currentCharge = 0;
 		health = 1;
 		img = MainGame.loadImage("Photos/potato-mine.png");
-
-		if (currentCharge >= chargeTime) {
-// 		TODO Find zombie that intersects
-//			if (zombie.intersects this) {
-//				takeDamage();
-//			}
-		}
 	}
 
 	@Override
-	void takeDamage() {
-		// TODO get zombie
-		// zombie.health - damage();
+	void takeDamage(Zombie zomb) {
+		zomb.health = 0;
+		this.health -= 1;
 	}
 
 	@Override
-	void shoot(int row, int col) {
-		// TODO Auto-generated method stub
+	void shoot(int row, int col) { // Does nothing, potato mines do not shoot
 	}
 }

@@ -1,24 +1,19 @@
 package game;
 
 class Sunflower extends Plant {
-
+	private static final long serialVersionUID = -3049630824248063159L;
+	
 	// Generates sun every 5 seconds, can be reduced
 	static final int shootInterval = 540;
 
 	Sunflower() {
 		health = 10;
 		img = MainGame.loadImage("Photos/sunflower.png");
-
-		// TODO Find zombie that intersects
-//		if (zombie.intersects this) {
-//			this.takeDamage();
-//		}
 	}
 
 	@Override
-	void takeDamage() {
-		// FIXME Get zombie damage and reduce by this number, on intersects?
-		// this.health - zombie.damage;
+	void takeDamage(Zombie zomb) {
+		this.health -= zomb.damage;
 	}
 
 	@Override
