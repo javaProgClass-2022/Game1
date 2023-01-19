@@ -10,7 +10,7 @@ class SnowPea extends Plant {
 
 		// TODO Find zombie that intersects
 //		if (zombie.intersects this) {
-//			this.health-zombie.damage;
+//			this.takeDamage();
 //		}
 	}
 
@@ -22,7 +22,7 @@ class SnowPea extends Plant {
 
 	@Override
 	void takeDamage() {
-		// FIXME Get zombie damage, on intersects?
+		// TODO Get zombie damage
 		// this.health =- zombie.damage;
 	}
 }

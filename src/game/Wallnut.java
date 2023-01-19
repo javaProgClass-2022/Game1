@@ -4,7 +4,6 @@ class Wallnut extends Plant {
 
 	Wallnut() {
 		health = 42;
-
 		checkHealth();
 
 		// TODO Find zombie that intersects
@@ -13,6 +12,7 @@ class Wallnut extends Plant {
 //		}
 	}
 
+	// Changes images depending on health
 	private void checkHealth() {
 		if (this.health > 20) {
 			img = MainGame.loadImage("Photos/wall-nut.png");
@@ -27,13 +27,11 @@ class Wallnut extends Plant {
 
 	@Override
 	void takeDamage() {
-		// FIXME Get zombie damage and reduce by this number, on intersects?
+		// TODO Get zombie damage and reduce by this number
 		// this.health - zombie.damage;
 	}
 
 	@Override
-	void shoot(int row, int col) {
-		// TODO Auto-generated method stub
-
+	void shoot(int row, int col) { // Do nothing, wall-nuts do not shoot
 	}
 }
