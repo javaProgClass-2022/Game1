@@ -1,17 +1,13 @@
 package game;
 
 class SnowPea extends Plant {
-
+	private static final long serialVersionUID = -923465118325001843L;
+	
 	static final int shootInterval = 60;
 
 	SnowPea() {
 		health = 10;
 		img = MainGame.loadImage("Photos/snow-pea.png");
-
-		// TODO Find zombie that intersects
-//		if (zombie.intersects this) {
-//			this.takeDamage();
-//		}
 	}
 
 	@Override
@@ -21,8 +17,7 @@ class SnowPea extends Plant {
 	}
 
 	@Override
-	void takeDamage() {
-		// TODO Get zombie damage
-		// this.health =- zombie.damage;
+	void takeDamage(Zombie zomb) {
+		this.health -= zomb.damage;
 	}
 }

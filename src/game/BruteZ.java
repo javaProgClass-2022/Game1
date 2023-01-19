@@ -1,6 +1,8 @@
 package game;
 
 public class BruteZ extends Zombie {
+	private static final long serialVersionUID = 7206111899573913653L;
+
 	BruteZ(int rowIsIn) {
 		health = 35;
 		speed = 0.5;
