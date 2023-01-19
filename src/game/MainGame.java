@@ -33,21 +33,24 @@ public class MainGame implements ActionListener {
 	/***** constants *****/
 	final static int PANW = 1450;
 	final static int PANH = 800;
-	final static BufferedImage bkg1 = loadImage("Photos/BackGround1.jpg");
-	final static BufferedImage sunIMG = loadImage("Photos/sun.png");
-	final static BufferedImage lawnMower = loadImage("Photos/lawnmower.png");
+	final static BufferedImage BKG1 = loadImage("Photos/BackGround1.jpg");
+	final static BufferedImage SUNIMG = loadImage("Photos/sun.png");
+	final static BufferedImage LAWNMOWER = loadImage("Photos/lawnmower.png");
 
 	// plant photos
-	final static BufferedImage peashooter = loadImage("Photos/peashooter.png");
-	final static BufferedImage potatomine = loadImage("Photos/potato-mine.png");
-	final static BufferedImage snowpea = loadImage("Photos/snow-pea.png");
-	final static BufferedImage sunflower = loadImage("Photos/sunflower.png");
-	final static BufferedImage wallnut = loadImage("Photos/wall-nut.png");
+	final static BufferedImage PEASHOOTER = loadImage("Photos/peashooter.png");
+	final static BufferedImage POTATOMINE = loadImage("Photos/potato-mine.png");
+	final static BufferedImage SNOWPEA = loadImage("Photos/snow-pea.png");
+	final static BufferedImage SUNFLOWER = loadImage("Photos/sunflower.png");
+	final static BufferedImage WALLNUT = loadImage("Photos/wall-nut.png");
 
 	// zombie photos
 	final static BufferedImage basicZ = loadImage("Photos/basicZ.png");
 	final static BufferedImage fastZ = loadImage("Photos/fastZ.png");
 	final static BufferedImage bruteZ = loadImage("Photos/bruteZ.png");
+
+	static boolean selected = false;
+	static Plant selectedPlant = null;
 
 	static boolean playerStatus = true;
 	static int sun = 100;
@@ -115,19 +118,19 @@ public class MainGame implements ActionListener {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 			// sets up base menu and game board
-			g.drawImage(bkg1, 0, 150, getWidth(), 650, null);
-			g.drawImage(peashooter, 280, 0, 120, 120, null);
+			g.drawImage(BKG1, 0, 150, getWidth(), 650, null);
+			g.drawImage(PEASHOOTER, 280, 0, 120, 120, null);
 			g.setFont(new Font("Montferrato", Font.PLAIN, 18));
 			g.drawString("100", 330, 142);
 			g.drawString("175", 530, 142);
-			g.drawImage(snowpea, 480, 0, 120, 120, null);
+			g.drawImage(SNOWPEA, 480, 0, 120, 120, null);
 			g.drawString("50", 725, 142);
-			g.drawImage(sunflower, 675, 0, 120, 120, null);
+			g.drawImage(SUNFLOWER, 675, 0, 120, 120, null);
 			g.drawString("50", 920, 142);
-			g.drawImage(wallnut, 875, 0, 105, 120, null);
+			g.drawImage(WALLNUT, 875, 0, 105, 120, null);
 			g.drawString("25", 1125, 142);
-			g.drawImage(potatomine, 1075, 0, 120, 120, null);
-			g.drawImage(sunIMG, 10, 0, 150, 150, null);
+			g.drawImage(POTATOMINE, 1075, 0, 120, 120, null);
+			g.drawImage(SUNIMG, 10, 0, 150, 150, null);
 			g.setFont(new Font("Montferrato", Font.BOLD, 36));
 			g.drawString((sun + ""), 170, 85);
 
@@ -180,36 +183,25 @@ public class MainGame implements ActionListener {
 		public void mouseClicked(MouseEvent e) {
 			int x = e.getX();
 			int y = e.getY();
-			Plant selectedP;
 
-			if (x > 280 && x < 400 && y > 0 && y < 150) {
-				board[0][0] = new Peashooter();
+			if (!selected) {
+				if (x > 280 && x < 400 && y > 0 && y < 150) {
+					selectedPlant = new Peashooter();
+				}
+				if (x > 480 && x < 600 && y > 0 && y < 150) {
+					selectedPlant = new SnowPea();
+				}
+				if (x > 675 && x < 795 && y > 0 && y < 150) {
+					selectedPlant = new Sunflower();
+				}
+				if (x > 875 && x < 980 && y > 0 && y < 150) {
+					selectedPlant = new Wallnut();
+				}
+				if (x > 1075 && x < 1195 && y > 0 && y < 150) {
+					selectedPlant = new PotatoMine();
+				}
+				selected = true;
 			}
-			if (x > 480 && x < 600 && y > 0 && y < 150) {
-				board[1][0] = new SnowPea();
-			}
-			if (x > 675 && x < 795 && y > 0 && y < 150) {
-				board[2][0] = new Sunflower();
-			}
-			if (x > 875 && x < 980 && y > 0 && y < 150) {
-				board[3][0] = new Wallnut();
-			}
-			if (x > 1075 && x < 1195 && y > 0 && y < 150) {
-				board[4][0] = new PotatoMine();
-			}
-
-			// g.drawImage(bkg1, 0, 150, getWidth(), 650, null);
-			// g.drawImage(peashooter, 280, 0, 120, 120, null);
-			// g.setFont(new Font("Montferrato", Font.PLAIN, 18));
-			// g.drawString("100", 330, 142);
-			// g.drawString("175", 530, 142);
-			// g.drawImage(snowpea, 480, 0, 120, 120, null);
-			// g.drawString("50", 725, 142);
-			// g.drawImage(sunflower, 675, 0, 120, 120, null);
-			// g.drawString("50", 920, 142);
-			// g.drawImage(wallnut, 875, 0, 105, 120, null);
-			// g.drawString("25", 1125, 142);
-			// g.drawImage(potatomine, 1075, 0, 120, 120, null);
 		}
 
 		@Override
@@ -396,6 +388,7 @@ public class MainGame implements ActionListener {
 			// if zombie hits left without a mower, game ends
 			if (z.x <= 170) {
 				zList.remove(z);
+				// TODO make actual game end screen
 				System.out.println("GAME ENDED.");
 			}
 		}
