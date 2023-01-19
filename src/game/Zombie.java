@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 abstract class Zombie extends Rectangle {
 	int health, damage;
-	double speed;
+	double xx, speed, rowIsIn;
 	BufferedImage img;
-	double rowIsIn;
+	boolean isSlowed = false;
 }

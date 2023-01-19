@@ -7,7 +7,7 @@ public class Lawnmower extends Rectangle {
 
 	int speed = 5;
 	boolean triggered = false;
-	BufferedImage img = MainGame.lawnMower;
+	BufferedImage img = MainGame.LAWNMOWER;
 
 	Lawnmower() {
 		width = 90;

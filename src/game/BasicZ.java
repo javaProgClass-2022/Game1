@@ -3,7 +3,7 @@ package game;
 class BasicZ extends Zombie {
 
 	BasicZ(int rowIsIn) {
-		health = 20;
+		health = 30;
 		speed = 1;
 		damage = 1;
 		height = 170;
