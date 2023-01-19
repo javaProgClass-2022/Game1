@@ -4,8 +4,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 class PeaProjectile extends Rectangle {
-	static int velocity = 1;
-	static int damage = 5;
+	static int velocity = 3;
+	static int damage = 10;
 	BufferedImage img = MainGame.loadImage("Photos/Peas/pea.png");
 
 	PeaProjectile(int x, int y) {

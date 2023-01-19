@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -75,11 +77,6 @@ public class MainGame implements ActionListener {
 
 	// constructor
 	MainGame() {
-		board[0][0] = new Peashooter();
-		board[1][0] = new Peashooter();
-		board[2][0] = new Peashooter();
-		board[3][0] = new Peashooter();
-		board[4][0] = new Peashooter();
 		createAndShowGUI();
 		lawnMowerCreation();
 		startTimer();
@@ -102,12 +99,13 @@ public class MainGame implements ActionListener {
 		timer.start();
 	}
 
-	class DrawingPanel extends JPanel {
+	class DrawingPanel extends JPanel implements MouseListener {
 		private static final long serialVersionUID = 1L;
 
 		DrawingPanel() {
 			this.setBackground(new Color(225, 198, 153));
 			this.setPreferredSize(new Dimension(PANW, PANH));
+			this.addMouseListener(this);
 		}
 
 		@Override
@@ -177,6 +175,58 @@ public class MainGame implements ActionListener {
 				}
 			}
 		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			int x = e.getX();
+			int y = e.getY();
+			Plant selectedP;
+
+			if (x > 280 && x < 400 && y > 0 && y < 150) {
+				board[0][0] = new Peashooter();
+			}
+			if (x > 480 && x < 600 && y > 0 && y < 150) {
+				board[1][0] = new SnowPea();
+			}
+			if (x > 675 && x < 795 && y > 0 && y < 150) {
+				board[2][0] = new Sunflower();
+			}
+			if (x > 875 && x < 980 && y > 0 && y < 150) {
+				board[3][0] = new Wallnut();
+			}
+			if (x > 1075 && x < 1195 && y > 0 && y < 150) {
+				board[4][0] = new PotatoMine();
+			}
+
+			// g.drawImage(bkg1, 0, 150, getWidth(), 650, null);
+			// g.drawImage(peashooter, 280, 0, 120, 120, null);
+			// g.setFont(new Font("Montferrato", Font.PLAIN, 18));
+			// g.drawString("100", 330, 142);
+			// g.drawString("175", 530, 142);
+			// g.drawImage(snowpea, 480, 0, 120, 120, null);
+			// g.drawString("50", 725, 142);
+			// g.drawImage(sunflower, 675, 0, 120, 120, null);
+			// g.drawString("50", 920, 142);
+			// g.drawImage(wallnut, 875, 0, 105, 120, null);
+			// g.drawString("25", 1125, 142);
+			// g.drawImage(potatomine, 1075, 0, 120, 120, null);
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+		}
 	}
 
 	// if image not found (via try/catch), throw error message
@@ -198,11 +248,11 @@ public class MainGame implements ActionListener {
 		createandmoveZombies();
 		triggerMower();
 		shootandmovePeas();
-		// when the amount of zombies are 0, it increases the level and reinstates the
-		// zombies
 		// TODO this is placeholder code until we figure out what will happen when the
 		// level is completed
 
+		// when the amount of zombies are 0, it increases the level and reinstates the
+		// zombies
 		if (zCount < 0 && playerStatus) {
 			level++;
 			zCount = level * 10;
@@ -211,6 +261,7 @@ public class MainGame implements ActionListener {
 	}
 
 	void shootandmovePeas() {
+		// moves peas
 		for (PeaProjectile pea : normalPeaList) {
 			pea.x += PeaProjectile.velocity;
 		}
@@ -227,15 +278,32 @@ public class MainGame implements ActionListener {
 				}
 			}
 		}
-		// take the two pea lists and if the intersect with zombie, make the latter take
-		// damage
+		// take the normal pea list and if any of it intersects with any zombie, make
+		// the latter take damage
 		for (int i = 0; i < normalPeaList.size(); i++) {
 			PeaProjectile pea = normalPeaList.get(i);
 			for (int j = 0; j < zList.size(); j++) {
 				Zombie zomb = zList.get(j);
 				if (pea.intersects(zomb)) {
+					zomb.health -= PeaProjectile.damage;
 					normalPeaList.remove(pea);
-					zList.remove(zomb);
+				}
+			}
+		}
+		// take the snowpea list and if any of it intersects with any zombie, do a
+		// smaller amount of damage, but lower velocity. This only happens once to a
+		// zombie
+		for (int i = 0; i < snowPeaList.size(); i++) {
+			SnowPeaProjectile snowpea = snowPeaList.get(i);
+			for (int j = 0; j < zList.size(); j++) {
+				Zombie zomb = zList.get(j);
+				if (snowpea.intersects(zomb)) {
+					zomb.health -= SnowPeaProjectile.damage;
+					if (zomb.isSlowed == false) {
+						zomb.speed *= 0.66;
+						zomb.isSlowed = true;
+					}
+					snowPeaList.remove(snowpea);
 				}
 			}
 		}
@@ -252,7 +320,7 @@ public class MainGame implements ActionListener {
 					// zomb.y is the higher range of the space between zombie's y coordinate and the
 					// rest is the lowest y coordinate a zombie can be at
 					int zombrow = (zomb.y - lowY - rowH + zomb.height) / rowH;
-					if (zombrow == lawnrow && zomb.x <= 171) {
+					if (zombrow == lawnrow && zomb.x <= 175) {
 						mower.triggered = true;
 					}
 				}
@@ -302,6 +370,7 @@ public class MainGame implements ActionListener {
 				c = new BruteZ(row);
 			}
 			c.x = PANW;
+			c.xx = c.x;
 			c.y = lowY + row * rowH + rowH - c.height;
 			zList.add(c);
 
@@ -309,10 +378,16 @@ public class MainGame implements ActionListener {
 			zCount--;
 		}
 
-		// going through each zombie and moving them
+		// goes through each zombie and moves them
 		for (int i = 0; i < zList.size(); i++) {
 			Zombie z = zList.get(i);
-			z.x -= z.speed;
+			// x is AN INT value and therfore, double speed change values are troublesome as
+			// they might just get rounded down (as happens upon casting) and not actually
+			// change the speed
+			// TODO maybe make a double xx value that compliments x to act as a middle
+			// ground between moving it a double speed each second
+			z.xx -= z.speed;
+			z.x = (int) Math.round(z.xx);
 
 			// if the zombie is dead, then it removes it from the list
 			if (z.health <= 0) {
@@ -320,7 +395,8 @@ public class MainGame implements ActionListener {
 			}
 			// if zombie hits left without a mower, game ends
 			if (z.x <= 170) {
-				System.exit(0);
+				zList.remove(z);
+				System.out.println("GAME ENDED.");
 			}
 		}
 	}

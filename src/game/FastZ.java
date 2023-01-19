@@ -3,8 +3,8 @@ package game;
 public class FastZ extends Zombie {
 
 	FastZ(int rowIsIn) {
-		health = 15;
-		speed = 1.5;
+		health = 20;
+		speed = 3;
 		damage = 1;
 		height = 150;
 		width = 100;
