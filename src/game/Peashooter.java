@@ -19,7 +19,7 @@ class Peashooter extends Plant {
 
 	@Override
 	void takeDamage() {
-		// FIXME Get zombie damage, on intersects?
+		// TODO Get zombie damage
 		// this.health =- zombie.damage;
 	}
 }

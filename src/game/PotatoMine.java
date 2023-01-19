@@ -14,7 +14,7 @@ class PotatoMine extends Plant {
 		if (currentCharge >= chargeTime) {
 // 		TODO Find zombie that intersects
 //			if (zombie.intersects this) {
-//				takeDamage();
+//				this.takeDamage();
 //			}
 		}
 	}
@@ -23,10 +23,10 @@ class PotatoMine extends Plant {
 	void takeDamage() {
 		// TODO get zombie
 		// zombie.health - damage();
+		this.health -= 1;
 	}
 
 	@Override
-	void shoot(int row, int col) {
-		// TODO Auto-generated method stub
+	void shoot(int row, int col) { // Does nothing, potato mines do not shoot
 	}
 }
