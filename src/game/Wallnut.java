@@ -4,13 +4,8 @@ class Wallnut extends Plant {
 
 	Wallnut() {
 		health = 42;
-
+		startTime = MainGame.t;
 		checkHealth();
-
-		// TODO Find zombie that intersects
-//		if (zombie.intersects this) {
-//			this.takeDamage();
-//		}
 	}
 
 	private void checkHealth() {
