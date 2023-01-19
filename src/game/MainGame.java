@@ -76,10 +76,10 @@ public class MainGame implements ActionListener {
 	// constructor
 	MainGame() {
 		board[0][0] = new Peashooter();
-		board[1][0] = new SnowPea();
-		board[2][0] = new Wallnut();
-		board[3][0] = new Sunflower();
-		board[4][0] = new PotatoMine();
+		board[1][0] = new Peashooter();
+		board[2][0] = new Peashooter();
+		board[3][0] = new Peashooter();
+		board[4][0] = new Peashooter();
 		createAndShowGUI();
 		lawnMowerCreation();
 		startTimer();
@@ -140,34 +140,28 @@ public class MainGame implements ActionListener {
 		}
 
 		void drawPeas(Graphics g) {
-			for (int x = 0; x < normalPeaList.size(); x++) {
-				g.drawImage(normalPeaList.get(x).img, normalPeaList.get(x).x, normalPeaList.get(x).y,
-						PeaProjectile.side, PeaProjectile.side, null);
-				normalPeaList.get(x).movePea();
+			for (PeaProjectile pea : normalPeaList) {
+				g.drawImage(pea.img, pea.x, pea.y, pea.width, pea.height, null);
 			}
-			for (int x = 0; x < snowPeaList.size(); x++) {
-				g.drawImage(snowPeaList.get(x).img, snowPeaList.get(x).x, snowPeaList.get(x).y, SnowPeaProjectile.side,
-						SnowPeaProjectile.side, null);
-				snowPeaList.get(x).movePea();
+			for (SnowPeaProjectile snowpea : snowPeaList) {
+				g.drawImage(snowpea.img, snowpea.x, snowpea.y, snowpea.width, snowpea.height, null);
 			}
 		}
 
 		void drawZombies(Graphics g) {
-			for (int x = 0; x < zList.size(); x++) {
-				g.drawImage(zList.get(x).img, zList.get(x).x, zList.get(x).y, zList.get(x).width, zList.get(x).height,
-						null);
+			for (Zombie zomb : zList) {
+				g.drawImage(zomb.img, zomb.x, zomb.y, zomb.width, zomb.height, null);
 			}
 		}
 
 		void drawMovers(Graphics g) {
-			for (int x = 0; x < mowList.length; x++) {
-				if (mowList[x] != null) {
-					if (mowList[x].x >= PANW) {
-						mowList[x] = null;
+			for (Lawnmower mower : mowList) {
+				if (mower != null) {
+					if (mower.x >= PANW) {
+						mower = null;
 					}
-					if (mowList[x] != null) {
-						g.drawImage(mowList[x].img, mowList[x].x, mowList[x].y, mowList[x].width, mowList[x].height,
-								null);
+					if (mower != null) {
+						g.drawImage(mower.img, mower.x, mower.y, mower.width, mower.height, null);
 					}
 				}
 			}
@@ -201,13 +195,28 @@ public class MainGame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		t++;
-		initializeZombies();
+		createandmoveZombies();
 		triggerMower();
+		shootandmovePeas();
 		// when the amount of zombies are 0, it increases the level and reinstates the
 		// zombies
 		// TODO this is placeholder code until we figure out what will happen when the
 		// level is completed
 
+		if (zCount < 0 && playerStatus) {
+			level++;
+			zCount = level * 10;
+		}
+		panel.repaint();
+	}
+
+	void shootandmovePeas() {
+		for (PeaProjectile pea : normalPeaList) {
+			pea.x += PeaProjectile.velocity;
+		}
+		for (SnowPeaProjectile snowpea : snowPeaList) {
+			snowpea.x += SnowPeaProjectile.velocity;
+		}
 		// every plant, if allowed, shoots
 		if (t % 150 == 0) {
 			for (int y = 0; y < board.length; y++) {
@@ -218,15 +227,22 @@ public class MainGame implements ActionListener {
 				}
 			}
 		}
-
-		if (zCount < 0 && playerStatus) {
-			level++;
-			zCount = level * 10;
+		// take the two pea lists and if the intersect with zombie, make the latter take
+		// damage
+		for (int i = 0; i < normalPeaList.size(); i++) {
+			PeaProjectile pea = normalPeaList.get(i);
+			for (int j = 0; j < zList.size(); j++) {
+				Zombie zomb = zList.get(j);
+				if (pea.intersects(zomb)) {
+					normalPeaList.remove(pea);
+					zList.remove(zomb);
+				}
+			}
 		}
-		panel.repaint();
 	}
 
-	public void triggerMower() {
+	void triggerMower() {
+		// triggers mower
 		for (int i = 0; i < mowList.length; i++) {
 			if (mowList[i] != null) {
 				Lawnmower mower = mowList[i];
@@ -236,13 +252,13 @@ public class MainGame implements ActionListener {
 					// zomb.y is the higher range of the space between zombie's y coordinate and the
 					// rest is the lowest y coordinate a zombie can be at
 					int zombrow = (zomb.y - lowY - rowH + zomb.height) / rowH;
-					if (zombrow == lawnrow && zomb.x <= 170) {
+					if (zombrow == lawnrow && zomb.x <= 171) {
 						mower.triggered = true;
-						zList.remove(j);
 					}
 				}
 			}
 		}
+		// allows triggered motors to kill zombies in its row
 		for (int i = 0; i < mowList.length; i++) {
 			if (mowList[i] != null) {
 				Lawnmower mower = mowList[i];
@@ -251,7 +267,6 @@ public class MainGame implements ActionListener {
 					for (int j = 0; j < zList.size(); j++) {
 						Zombie zomb = zList.get(j);
 						if ((zomb.rowIsIn == i) && mower.intersects(zomb)) {
-							System.out.println("INTERSECTS");
 							zList.remove(zomb);
 						}
 					}
@@ -260,7 +275,7 @@ public class MainGame implements ActionListener {
 		}
 	}
 
-	public void lawnMowerCreation() {
+	void lawnMowerCreation() {
 		for (int i = 0; i < 5; i++) {
 			Lawnmower m = new Lawnmower();
 			m.x = 170 - i * 2;
@@ -269,8 +284,7 @@ public class MainGame implements ActionListener {
 		}
 	}
 
-	public void initializeZombies() {
-
+	void createandmoveZombies() {
 		// creates a zombie every 2 seconds
 		if (t % 200 == 0 && zCount >= 0) {
 
@@ -304,8 +318,10 @@ public class MainGame implements ActionListener {
 			if (z.health <= 0) {
 				zList.remove(z);
 			}
-			System.out.println(z.rowIsIn);
+			// if zombie hits left without a mower, game ends
+			if (z.x <= 170) {
+				System.exit(0);
+			}
 		}
-		System.out.println();
 	}
 }
