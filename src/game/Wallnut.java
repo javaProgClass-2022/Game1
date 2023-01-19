@@ -1,6 +1,7 @@
 package game;
 
 class Wallnut extends Plant {
+	private static final long serialVersionUID = -3255394878231110366L;
 
 	Wallnut() {
 		health = 42;
@@ -22,9 +23,8 @@ class Wallnut extends Plant {
 	}
 
 	@Override
-	void takeDamage() {
-		// TODO Get zombie damage and reduce by this number
-		// this.health - zombie.damage;
+	void takeDamage(Zombie zomb) {
+		this.health -= zomb.damage;
 	}
 
 	@Override

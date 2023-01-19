@@ -1,8 +1,8 @@
 package game;
 
 class Peashooter extends Plant {
-
-	static final int shootInterval = 60;
+	private static final long serialVersionUID = 4371182833899103646L;
+	
 	static int side = 25;
 
 	Peashooter() {
@@ -18,8 +18,7 @@ class Peashooter extends Plant {
 	}
 
 	@Override
-	void takeDamage() {
-		// TODO Get zombie damage
-		// this.health =- zombie.damage;
+	void takeDamage(Zombie zomb) {
+		this.health -= zomb.damage;
 	}
 }

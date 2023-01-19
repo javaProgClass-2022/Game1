@@ -294,7 +294,7 @@ public class MainGame implements ActionListener {
 		createandmoveZombies();
 		triggerMower();
 		shootandmovePeas();
-
+		plantZombieIntersect();
 		// when the amount of zombies are 0, it increases the level and reinstates the
 		// zombies
 		if (zCount < 0 && playerStatus) {
@@ -313,6 +313,10 @@ public class MainGame implements ActionListener {
 			snowpea.x += SnowPeaProjectile.velocity;
 		}
 		// every plant, if allowed, shoots
+		if (t % 220 == 0) {
+			for (int y = 0; y < board.length; y++) {
+				for (int x = 0; x < board[y].length; x++) {
+					if (board[y][x] != null) {
 		for (int y = 0; y < board.length; y++) {
 			for (int x = 0; x < board[y].length; x++) {
 				if (board[y][x] != null) {
@@ -353,8 +357,37 @@ public class MainGame implements ActionListener {
 		}
 	}
 
+	void plantZombieIntersect() {
+		// if zombie insersects plant, stops and plant takes damage
+		double orignalSpeed = 0;
+		System.out.println(board.length);
+		if (t % 60 == 0) {
+			for (int x = 0; x < board.length; x++) {
+				for (int i = 0; i < board.length; i++) {
+					if (board[x][i] == null) {
+						continue;
+					}
+					Plant currentPlant = board[x][i];
+					for (int j = 0; j < zList.size(); j++) {
+						Zombie zomb = zList.get(j);
+						if (currentPlant.intersects(zomb)) {
+							orignalSpeed = zomb.speed;
+							zomb.speed = 0;
+							currentPlant.takeDamage(zomb);
+							// Removes plant if it dies
+							if (currentPlant.health <= 0) {
+								board[x][i] = null;
+							}
+						} else {
+							zomb.speed = orignalSpeed;
+						}
+					}
+				}
+			}
+		}
+	}
+
 	void triggerMower() {
-		// triggers mower
 		for (int i = 0; i < mowList.length; i++) {
 			if (mowList[i] != null) {
 				Lawnmower mower = mowList[i];
