@@ -9,7 +9,11 @@ public class BruteZ extends Zombie {
 		damage = 2;
 		height = 190;
 		width = 200;
-		img = MainGame.bruteZ;
+		if (this.isSlowed) {
+			img = MainGame.BRUTEZSLOW;
+		} else {
+			img = MainGame.BRUTEZ;
+		}
 		this.rowIsIn = rowIsIn;
 	}
 }

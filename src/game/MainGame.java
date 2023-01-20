@@ -40,14 +40,24 @@ public class MainGame implements ActionListener {
 	// plant photos
 	final static BufferedImage PEASHOOTER = loadImage("Photos/peashooter.png");
 	final static BufferedImage POTATOMINE = loadImage("Photos/potato-mine.png");
+	final static BufferedImage POTATOMINECHARGING = loadImage("Photos/potato_mine_charging.png");
 	final static BufferedImage SNOWPEA = loadImage("Photos/snow-pea.png");
 	final static BufferedImage SUNFLOWER = loadImage("Photos/sunflower.png");
-	final static BufferedImage WALLNUT = loadImage("Photos/wall-nut.png");
+	final static BufferedImage WALLNUT1 = loadImage("Photos/wall-nut.png");
+	final static BufferedImage WALLNUT2 = loadImage("Photos/WallnutExtra/WallnutDamage1.png");
+	final static BufferedImage WALLNUT3 = loadImage("Photos/WallnutExtra/WallnutDamage2.png");
+
+	// pea photos
+	final static BufferedImage PEAPROJECTILE = loadImage("Photos/Peas/pea.png");
+	final static BufferedImage SNOWPEAPROJECTILE = loadImage("Photos/Peas/snowy_pea.png");
 
 	// zombie photos
-	final static BufferedImage basicZ = loadImage("Photos/basicZ.png");
-	final static BufferedImage fastZ = loadImage("Photos/fastZ.png");
-	final static BufferedImage bruteZ = loadImage("Photos/bruteZ.png");
+	final static BufferedImage BASICZ = loadImage("Photos/basicZ.png");
+	final static BufferedImage BASICZSLOW = loadImage("Photos/SlowedZombies/basicZslow.png");
+	final static BufferedImage FASTZ = loadImage("Photos/fastZ.png");
+	final static BufferedImage FASTZSLOW = loadImage("Photos/SlowedZombies/fastZslow.png");
+	final static BufferedImage BRUTEZ = loadImage("Photos/bruteZ.png");
+	final static BufferedImage BRUTEZSLOW = loadImage("Photos//SlowedZombies/bruteZslow.png");
 
 	static boolean selPeashooter = false;
 	static boolean selSnowpea = false;
@@ -68,22 +78,30 @@ public class MainGame implements ActionListener {
 	static ArrayList<SnowPeaProjectile> snowPeaList = new ArrayList<SnowPeaProjectile>();
 
 	static Plant board[][] = new Plant[5][9];
+
 	// for the 2d array:
 	// X RANGE: 260 - 1030, 9 columns each 86 wide
 	// Y RANGE: 230 - 770, 5 rows each 108 tall
 	// these values make sure that the images look okay in every space
-	static final int lowX = 255;
-	static final int highX = 1030;
-	static final int lowY = 220;
-	static final int highY = 770;
-	static final int colW = 85;
-	static final int rowH = 108;
+	static final int LOWX = 255;
+	static final int HIGHX = 1030;
+	static final int LOWY = 220;
+	static final int HIGHY = 770;
+	static final int COLW = 85;
+	static final int ROWH = 108;
 
 	/***** instance variables (global) *****/
 	DrawingPanel panel = new DrawingPanel();
 
 	// constructor
 	MainGame() {
+		// FIXME Debug
+		board[0][8] = new Sunflower();
+		board[1][8] = new SnowPea();
+		board[2][8] = new Peashooter();
+		board[3][8] = new Wallnut();
+		board[4][8] = new PotatoMine();
+
 		createAndShowGUI();
 		lawnMowerCreation();
 		startTimer();
@@ -131,7 +149,7 @@ public class MainGame implements ActionListener {
 			g.drawString("50", 725, 142);
 			g.drawImage(SUNFLOWER, 675, 0, 120, 120, null);
 			g.drawString("50", 920, 142);
-			g.drawImage(WALLNUT, 875, 0, 105, 120, null);
+			g.drawImage(WALLNUT1, 875, 0, 105, 120, null);
 			g.drawString("25", 1125, 142);
 			g.drawImage(POTATOMINE, 1075, 0, 120, 120, null);
 			g.drawImage(SUNIMG, 10, 0, 150, 150, null);
@@ -178,7 +196,7 @@ public class MainGame implements ActionListener {
 				for (int x = 0; x < board[y].length; x++) {
 					// if there is a plant on the tile, it'll display it
 					if (board[y][x] != null) {
-						g.drawImage(board[y][x].img, lowX + (x * colW), lowY + (y * rowH), colW, rowH, null);
+						g.drawImage(board[y][x].img, LOWX + (x * COLW), LOWY + (y * ROWH), COLW, ROWH, null);
 					}
 				}
 			}
@@ -295,6 +313,7 @@ public class MainGame implements ActionListener {
 		triggerMower();
 		shootandmovePeas();
 		plantZombieIntersect();
+		checkPotatoCharge();
 		// when the amount of zombies are 0, it increases the level and reinstates the
 		// zombies
 		if (zCount < 0 && playerStatus) {
@@ -302,6 +321,19 @@ public class MainGame implements ActionListener {
 			zCount = level * 10;
 		}
 		panel.repaint();
+	}
+
+	private void checkPotatoCharge() {
+		for (int y = 0; y < board.length; y++) {
+			for (int x = 0; x < board[y].length; x++) {
+				if (board[y][x] instanceof PotatoMine) {
+					board[y][x].chargeAmount++;
+					if (board[y][x].chargeAmount == 300) {
+						board[y][x].charged = true;
+					}
+				}
+			}
+		}
 	}
 
 	void shootandmovePeas() {
@@ -313,7 +345,7 @@ public class MainGame implements ActionListener {
 			snowpea.x += SnowPeaProjectile.velocity;
 		}
 		// every plant, if allowed, shoots
-		if (t % 220 == 0) {
+		if (t % 200 == 0) {
 			for (int y = 0; y < board.length; y++) {
 				for (int x = 0; x < board[y].length; x++) {
 					if (board[y][x] != null) {
@@ -358,28 +390,32 @@ public class MainGame implements ActionListener {
 	}
 
 	void plantZombieIntersect() {
-		// if zombie insersects plant, stops and plant takes damage
-		double orignalSpeed = 0;
-		System.out.println(board.length);
-		if (t % 60 == 0) {
-			for (int x = 0; x < board.length; x++) {
-				for (int i = 0; i < board.length; i++) {
-					if (board[x][i] == null) {
+		// if zombie insersects plant, stops and plant takes damage every seconf
+		for (int x = 0; x < board.length; x++) {
+			for (int i = 0; i < board.length; i++) {
+				if (board[x][i] == null) {
+					continue;
+				}
+				Plant currentPlant = board[x][i];
+				for (int j = 0; j < zList.size(); j++) {
+					Zombie zomb = zList.get(j);
+					if (!currentPlant.intersects(zomb)) {
+						if (zomb instanceof BasicZ) {
+							zomb.speed = 1;
+						}
+						if (zomb instanceof BruteZ) {
+							zomb.speed = 0.5;
+						}
+						if (zomb instanceof FastZ) {
+							zomb.speed = 2;
+						}
 						continue;
 					}
-					Plant currentPlant = board[x][i];
-					for (int j = 0; j < zList.size(); j++) {
-						Zombie zomb = zList.get(j);
-						if (currentPlant.intersects(zomb)) {
-							orignalSpeed = zomb.speed;
-							zomb.speed = 0;
-							currentPlant.takeDamage(zomb);
-							// Removes plant if it dies
-							if (currentPlant.health <= 0) {
-								board[x][i] = null;
-							}
-						} else {
-							zomb.speed = orignalSpeed;
+					zomb.speed = 0;
+					if (t % 60 == 0) {
+						currentPlant.takeDamage(zomb);
+						if (currentPlant.health <= 0) { // Removes plant if it dies
+							board[x][i] = null;
 						}
 					}
 				}
@@ -396,7 +432,7 @@ public class MainGame implements ActionListener {
 					int lawnrow = i;
 					// zomb.y is the higher range of the space between zombie's y coordinate and the
 					// rest is the lowest y coordinate a zombie can be at
-					int zombrow = (zomb.y - lowY - rowH + zomb.height) / rowH;
+					int zombrow = (zomb.y - LOWY - ROWH + zomb.height) / ROWH;
 					if (zombrow == lawnrow && zomb.x <= 175) {
 						mower.triggered = true;
 					}
@@ -424,7 +460,7 @@ public class MainGame implements ActionListener {
 		for (int i = 0; i < 5; i++) {
 			Lawnmower m = new Lawnmower();
 			m.x = 170 - i * 2;
-			m.y = lowY + i * rowH;
+			m.y = LOWY + i * ROWH;
 			mowList[i] = m;
 		}
 	}
@@ -448,7 +484,7 @@ public class MainGame implements ActionListener {
 			}
 			c.x = PANW;
 			c.xx = c.x;
-			c.y = lowY + row * rowH + rowH - c.height;
+			c.y = LOWY + row * ROWH + ROWH - c.height;
 			zList.add(c);
 
 			// decreases the zombie count when one is created
@@ -458,6 +494,12 @@ public class MainGame implements ActionListener {
 		// goes through each zombie and moves them
 		for (int i = 0; i < zList.size(); i++) {
 			Zombie z = zList.get(i);
+			// x is AN INT value and therefore, double speed change values are troublesome
+			// as
+			// they might just get rounded down (as happens upon casting) and not actually
+			// change the speed
+			// TODO maybe make a double xx value that compliments x to act as a middle
+			// ground between moving it a double speed each second
 			z.xx -= z.speed;
 			z.x = (int) Math.round(z.xx);
 
@@ -469,7 +511,7 @@ public class MainGame implements ActionListener {
 			if (z.x <= 170) {
 				zList.remove(z);
 				// TODO make actual game end screen
-				System.out.println("GAME ENDED.");
+				System.out.println("THUS ENDS THE GAME");
 			}
 		}
 	}

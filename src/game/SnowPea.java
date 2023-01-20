@@ -2,19 +2,20 @@ package game;
 
 class SnowPea extends Plant {
 	private static final long serialVersionUID = -923465118325001843L;
-	
-	static final int shootInterval = 60;
 
 	SnowPea() {
+		// FIXME get position of plant
+		width = (MainGame.HIGHX - MainGame.LOWX) % 5;
+		height = (MainGame.HIGHY - MainGame.LOWY) % 9;
 		health = 10;
-		img = MainGame.loadImage("Photos/snow-pea.png");
+		img = MainGame.SNOWPEA;
 		startTime = MainGame.t;
 	}
 
 	@Override
 	void shoot(int row, int col) {
-		new SnowPeaProjectile((col * MainGame.colW + MainGame.lowX) + MainGame.colW,
-				(row * MainGame.rowH + MainGame.lowY) + 15);
+		new SnowPeaProjectile((col * MainGame.COLW + MainGame.LOWX) + MainGame.COLW,
+				(row * MainGame.ROWH + MainGame.LOWY) + 15);
 	}
 
 	@Override
