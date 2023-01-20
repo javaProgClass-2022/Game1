@@ -53,8 +53,10 @@ public class MainGame implements ActionListener {
 	final static BufferedImage fastZ = loadImage("Photos/fastZ.png");
 	final static BufferedImage bruteZ = loadImage("Photos/bruteZ.png");
 
+	
+	final static double sunIncriment = 15.0;
 	static boolean playerStatus = true;
-	static int sun = 100;
+	static double sun = 100;
 	static int t = 0;
 	static int level = 1;
 	static int zCount = level * 10; // amount of zombies in each level
@@ -142,7 +144,7 @@ public class MainGame implements ActionListener {
 			g.drawImage(potatomine, 1075, 0, 120, 120, null);
 			g.drawImage(sunIMG, 10, 0, 150, 150, null);
 			g.setFont(new Font("Montferrato", Font.BOLD, 36));
-			g.drawString((sun + ""), 170, 85);
+			g.drawString(((int)sun + ""), 170, 85);
 
 			drawPlants(g);
 			drawPeas(g);
@@ -227,7 +229,7 @@ public class MainGame implements ActionListener {
 			
 			for(Sun sunny : sunList) {
 				if(x >= sunny.x-sunny.width && x <= sunny.x+sunny.width && y >= sunny.y-sunny.height && y <= sunny.y+sunny.height) {
-					sun++;
+					sun+=sunIncriment;
 					sunList.remove(sunny);
 					break;
 				}
@@ -322,6 +324,7 @@ public class MainGame implements ActionListener {
 		initializeZombies();
 		triggerMower();
 		sunFlowerCheck();
+		checkSunOnScreen();
 		// when the amount of zombies are 0, it increases the level and reinstates the
 		// zombies
 		// TODO this is placeholder code until we figure out what will happen when the
@@ -342,20 +345,24 @@ public class MainGame implements ActionListener {
 			level++;
 			zCount = level * 10;
 		}
+		sun+=0.0025;
 		panel.repaint();
 	}
 
-	public void addSun(Sun sunToken) {
-		sun++;
-		sunList.remove(sunToken);
+	public void checkSunOnScreen() {
+		for(Sun sunny : sunList) {
+			sunny.timeRemaining--;
+			if(sunny.timeRemaining < 0) sunList.remove(sunny);
+			break;
+		}
 	}
-
+	
 	public void sunFlowerCheck() {
 		for(int i = 0; i < board.length; i++) {
 			for(int j = 0; j < board[i].length; j++) {
 				if (board[i][j] instanceof Sunflower ) {
 					board[i][j].startTime++;
-					if(board[i][j].startTime%500 == 0) {
+					if(board[i][j].startTime%2000 == 0) {
 						createSun();
 					}
 				}
