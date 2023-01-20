@@ -422,38 +422,8 @@ public class MainGame implements ActionListener {
 		}
 	}
 
+	// triggers mower
 	void triggerMower() {
-		// triggers mower
-	void plantZombieIntersect() {
-		// if zombie insersects plant, stops and plant takes damage
-		double orignalSpeed = 0;
-		System.out.println(board.length);
-		if (t % 60 == 0) {
-			for (int x = 0; x < board.length; x++) {
-				for (int i = 0; i < board.length; i++) {
-					if (board[x][i] == null) {
-						continue;
-					}
-					Plant currentPlant = board[x][i];
-					for (int j = 0; j < zList.size(); j++) {
-						Zombie zomb = zList.get(j);
-						if (currentPlant.intersects(zomb)) {
-							currentPlant.takeDamage(zomb);
-							zomb.speed = 0;
-							orignalSpeed = zomb.speed;
-							// Removes plant if it dies
-							if (currentPlant.health <= 0) {
-								board[x][i] = null;
-							}
-						} else {
-							zomb.speed = orignalSpeed;
-						}
-					}
-				}
-			}
-		}
-
-	}
 		for (int i = 0; i < mowList.length; i++) {
 			if (mowList[i] != null) {
 				Lawnmower mower = mowList[i];
