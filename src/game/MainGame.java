@@ -247,8 +247,8 @@ public class MainGame implements ActionListener {
 						selectedPlants[4] = false;
 					}
 				} else {
-					for (boolean s : selectedPlants) {
-						s = false;
+					for (int j = 0; j < selectedPlants.length; j++) {
+						selectedPlants[j] = false;
 					}
 				}
 			}
