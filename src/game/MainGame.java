@@ -312,6 +312,7 @@ public class MainGame implements ActionListener {
 		createandmoveZombies();
 		triggerMower();
 		plantZombieIntersect();
+		checkPotatoCharge();
 		// when the amount of zombies are 0, it increases the level and reinstates the
 		// zombies
 		shootandmovePeas();
