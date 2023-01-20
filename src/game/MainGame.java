@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.event.MouseInputListener;
 
 public class MainGame implements ActionListener {
 	public static void main(String[] args) {
@@ -42,6 +45,9 @@ public class MainGame implements ActionListener {
 	final static BufferedImage sunflower = loadImage("Photos/sunflower.png");
 	final static BufferedImage wallnut = loadImage("Photos/wall-nut.png");
 
+	static boolean selectedPlants[] = { false, false, false, false, false };
+	static Plant selectedPlant = null;
+
 	// zombie photos
 	final static BufferedImage basicZ = loadImage("Photos/basicZ.png");
 	final static BufferedImage fastZ = loadImage("Photos/fastZ.png");
@@ -52,8 +58,14 @@ public class MainGame implements ActionListener {
 	static int t = 0;
 	static int level = 1;
 	static int zCount = level * 10; // amount of zombies in each level
+
+
+
 	static ArrayList<Zombie> zList = new ArrayList<Zombie>();
 	static Lawnmower mowList[] = new Lawnmower[5];
+	static ArrayList<PeaProjectile> normalPeaList = new ArrayList<PeaProjectile>();
+	static ArrayList<SnowPeaProjectile> snowPeaList = new ArrayList<SnowPeaProjectile>();
+	static ArrayList<Sun> sunList = new ArrayList<Sun>();
 
 	static Plant board[][] = new Plant[5][9];
 	// for the 2d array:
@@ -72,6 +84,12 @@ public class MainGame implements ActionListener {
 
 	// constructor
 	MainGame() {
+		board[0][0] = new Peashooter();
+		board[1][0] = new SnowPea();
+		board[2][0] = new Wallnut();
+		board[3][0] = new Sunflower();
+		board[4][0] = new PotatoMine();
+		board[0][3] = new Sunflower();
 		createAndShowGUI();
 		lawnMowerCreation();
 		startTimer();
@@ -90,16 +108,17 @@ public class MainGame implements ActionListener {
 
 	void startTimer() {
 		Timer timer = new Timer(1, this);
-		timer.setInitialDelay(5000);
+		timer.setInitialDelay(1000);
 		timer.start();
 	}
 
-	class DrawingPanel extends JPanel {
+	class DrawingPanel extends JPanel implements MouseListener {
 		private static final long serialVersionUID = 1L;
 
 		DrawingPanel() {
 			this.setBackground(new Color(225, 198, 153));
 			this.setPreferredSize(new Dimension(PANW, PANH));
+			this.addMouseListener(this);
 		}
 
 		@Override
@@ -126,15 +145,29 @@ public class MainGame implements ActionListener {
 			g.drawString((sun + ""), 170, 85);
 
 			drawPlants(g);
+			drawPeas(g);
 			drawMovers(g);
 			drawZombies(g);
+			drawSun(g);
+		}
+
+		void drawPeas(Graphics g) {
+			for (int x = 0; x < normalPeaList.size(); x++) {
+				g.drawImage(normalPeaList.get(x).img, normalPeaList.get(x).x, normalPeaList.get(x).y,
+						PeaProjectile.side, PeaProjectile.side, null);
+				normalPeaList.get(x).movePea();
+			}
+			for (int x = 0; x < snowPeaList.size(); x++) {
+				g.drawImage(snowPeaList.get(x).img, snowPeaList.get(x).x, snowPeaList.get(x).y, SnowPeaProjectile.side,
+						SnowPeaProjectile.side, null);
+				snowPeaList.get(x).movePea();
+			}
 		}
 
 		void drawZombies(Graphics g) {
 			for (int x = 0; x < zList.size(); x++) {
 				g.drawImage(zList.get(x).img, zList.get(x).x, zList.get(x).y, zList.get(x).width, zList.get(x).height,
 						null);
-				g.drawRect(zList.get(x).x, zList.get(x).y, zList.get(x).width, zList.get(x).height);
 			}
 		}
 
@@ -145,15 +178,15 @@ public class MainGame implements ActionListener {
 						mowList[x] = null;
 					}
 					if (mowList[x] != null) {
-						g.drawImage(mowList[x].img, mowList[x].x, mowList[x].y, Lawnmower.width, Lawnmower.height,
+						g.drawImage(mowList[x].img, mowList[x].x, mowList[x].y, mowList[x].width, mowList[x].height,
 								null);
-						g.drawRect(mowList[x].x, mowList[x].y, Lawnmower.width, Lawnmower.height);
 					}
 				}
 			}
 		}
 
 		void drawPlants(Graphics g) {
+			// draws every plant in board[][] array if not null
 			for (int y = 0; y < board.length; y++) {
 				for (int x = 0; x < board[y].length; x++) {
 					// if there is a plant on the tile, it'll display it
@@ -162,6 +195,111 @@ public class MainGame implements ActionListener {
 					}
 				}
 			}
+			// show which plant has been selected
+			if (selectedPlants[0]) {
+				g.drawRect(270, 2, 140, 146);
+			}
+			if (selectedPlants[1]) {
+				g.drawRect(470, 2, 140, 146);
+			}
+			if (selectedPlants[2]) {
+				g.drawRect(665, 2, 140, 146);
+			}
+			if (selectedPlants[3]) {
+				g.drawRect(865, 2, 125, 146);
+			}
+			if (selectedPlants[4]) {
+				g.drawRect(1065, 2, 140, 146);
+			}
+		}
+		
+		void drawSun(Graphics g) {
+			for(int i = 0; i < sunList.size(); i++) {
+				Sun sun = sunList.get(i);
+				g.drawImage(sun.img, sun.x, sun.y, sun.width, sun.height, null);
+			}
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			int x = e.getX();
+			int y = e.getY();
+			
+			for(Sun sunny : sunList) {
+				if(x >= sunny.x-sunny.width && x <= sunny.x+sunny.width && y >= sunny.y-sunny.height && y <= sunny.y+sunny.height) {
+					sun++;
+					sunList.remove(sunny);
+					break;
+				}
+			}
+
+			if (!selectedPlants[0] && !selectedPlants[1] && !selectedPlants[2] && !selectedPlants[3]
+					&& !selectedPlants[4]) {
+				if (x > 280 && x < 400 && y > 0 && y < 150) {
+					selectedPlants[0] = true;
+				}
+				if (x > 480 && x < 600 && y > 0 && y < 150) {
+					selectedPlants[1] = true;
+				}
+				if (x > 675 && x < 795 && y > 0 && y < 150) {
+					selectedPlants[2] = true;
+				}
+				if (x > 875 && x < 980 && y > 0 && y < 150) {
+					selectedPlants[3] = true;
+				}
+				if (x > 1075 && x < 1195 && y > 0 && y < 150) {
+					selectedPlants[4] = true;
+				}
+			}
+
+			// if any plant has been selected, then find the row & col of the next mouse
+			// click. If valid, then place selected plant on clicked upon tile
+			else {
+				int row = (y - lowY) / rowH;
+				int col = (x - lowX) / colW;
+				if (row >= 0 && row <= 4 && col >= 0 && col <= 8) {
+					if (selectedPlants[0]) {
+						board[row][col] = new Peashooter();
+						selectedPlants[0] = false;
+					}
+					if (selectedPlants[1]) {
+						board[row][col] = new SnowPea();
+						selectedPlants[1] = false;
+					}
+					if (selectedPlants[2]) {
+						board[row][col] = new Sunflower();
+						selectedPlants[2] = false;
+					}
+					if (selectedPlants[3]) {
+						board[row][col] = new Wallnut();
+						selectedPlants[3] = false;
+					}
+					if (selectedPlants[4]) {
+						board[row][col] = new PotatoMine();
+						selectedPlants[4] = false;
+					}
+				} else {
+					for (int j = 0; j < selectedPlants.length; j++) {
+						selectedPlants[j] = false;
+					}
+				}
+			}
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
 		}
 	}
 
@@ -183,15 +321,55 @@ public class MainGame implements ActionListener {
 		t++;
 		initializeZombies();
 		triggerMower();
+		sunFlowerCheck();
 		// when the amount of zombies are 0, it increases the level and reinstates the
 		// zombies
 		// TODO this is placeholder code until we figure out what will happen when the
 		// level is completed
+
+		// every plant, if allowed, shoots
+		if (t % 150 == 0) {
+			for (int y = 0; y < board.length; y++) {
+				for (int x = 0; x < board[y].length; x++) {
+					if (board[y][x] != null) {
+						board[y][x].shoot(y, x);
+					}
+				}
+			}
+		}
+
 		if (zCount < 0 && playerStatus) {
 			level++;
 			zCount = level * 10;
 		}
 		panel.repaint();
+	}
+
+	public void addSun(Sun sunToken) {
+		sun++;
+		sunList.remove(sunToken);
+	}
+
+	public void sunFlowerCheck() {
+		for(int i = 0; i < board.length; i++) {
+			for(int j = 0; j < board[i].length; j++) {
+				if (board[i][j] instanceof Sunflower ) {
+					board[i][j].startTime++;
+					if(board[i][j].startTime%500 == 0) {
+						createSun();
+					}
+				}
+			}
+		}
+	}
+
+	public void createSun() {
+		int x = (int) (Math.random()*PANW);
+		int y = (int) (Math.random()*PANH-150);
+		Sun sun = new Sun();
+		sun.x = x;
+		sun.y = y;
+		sunList.add(sun);
 	}
 
 	public void triggerMower() {
@@ -214,20 +392,17 @@ public class MainGame implements ActionListener {
 		for (int i = 0; i < mowList.length; i++) {
 			if (mowList[i] != null) {
 				Lawnmower mower = mowList[i];
-				System.out.print("" + mower.x + " " + i + ".");
 				if (mower.triggered) {
 					mower.x += mower.speed;
 					for (int j = 0; j < zList.size(); j++) {
 						Zombie zomb = zList.get(j);
-						if (mower.x == zomb.x - zomb.width + mower.width) {
-							System.out.println("INTERSECTS");
+						if ((zomb.rowIsIn == i) && mower.intersects(zomb)) {
 							zList.remove(zomb);
 						}
 					}
 				}
 			}
 		}
-		System.out.println();
 	}
 
 	public void lawnMowerCreation() {
@@ -251,11 +426,11 @@ public class MainGame implements ActionListener {
 
 			// creates the zombies based on the type
 			if (type == 1) {
-				c = new BasicZ();
+				c = new BasicZ(row);
 			} else if (type == 2) {
-				c = new FastZ();
+				c = new FastZ(row);
 			} else {
-				c = new BruteZ();
+				c = new BruteZ(row);
 			}
 			c.x = PANW;
 			c.y = lowY + row * rowH + rowH - c.height;
