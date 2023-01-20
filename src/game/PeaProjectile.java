@@ -4,6 +4,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 class PeaProjectile extends Rectangle {
+	private static final long serialVersionUID = 3467147150772030912L;
+	
 	static int velocity = 3;
 	static int damage = 10;
 	BufferedImage img = MainGame.loadImage("Photos/Peas/pea.png");

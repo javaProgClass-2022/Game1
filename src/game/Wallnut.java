@@ -1,34 +1,36 @@
 package game;
 
 class Wallnut extends Plant {
+	private static final long serialVersionUID = -3255394878231110366L;
 
 	Wallnut() {
-		health = 42;
+		// FIXME get position of plant
+		width = (MainGame.HIGHX - MainGame.LOWX) % 5;
+		height = (MainGame.HIGHY - MainGame.LOWY) % 9;
+		health = 40;
 		startTime = MainGame.t;
 		checkHealth();
 	}
 
+	// Changes images depending on health
 	private void checkHealth() {
 		if (this.health > 20) {
-			img = MainGame.loadImage("Photos/wall-nut.png");
+			img = MainGame.WALLNUT1;
 		}
 		if (this.health <= 20) {
-			img = MainGame.loadImage("Photos/WallnutExtra/WallnutDamage1.png");
+			img = MainGame.WALLNUT2;
 		}
 		if (this.health <= 10) {
-			img = MainGame.loadImage("Photos/WallnutExtra/WallnutDamage2.png");
+			img = MainGame.WALLNUT3;
 		}
 	}
 
 	@Override
-	void takeDamage() {
-		// FIXME Get zombie damage and reduce by this number, on intersects?
-		// this.health - zombie.damage;
+	void takeDamage(Zombie zomb) {
+		this.health -= zomb.damage;
 	}
 
 	@Override
-	void shoot(int row, int col) {
-		// TODO Auto-generated method stub
-
+	void shoot(int row, int col) { // Do nothing, wall-nuts do not shoot
 	}
 }
