@@ -8,11 +8,7 @@ class Sunflower extends Plant {
 	Sunflower() {
 		health = 10;
 		img = MainGame.loadImage("Photos/sunflower.png");
-
-		// TODO Find zombie that intersects
-//		if (zombie.intersects this) {
-//			this.takeDamage();
-//		}
+		startTime = MainGame.t;
 	}
 
 	@Override

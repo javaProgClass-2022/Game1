@@ -49,7 +49,11 @@ public class MainGame implements ActionListener {
 	final static BufferedImage fastZ = loadImage("Photos/fastZ.png");
 	final static BufferedImage bruteZ = loadImage("Photos/bruteZ.png");
 
-	static boolean selected = false;
+	static boolean selPeashooter = false;
+	static boolean selSnowpea = false;
+	static boolean selSunflower = false;
+	static boolean selWallnut = false;
+	static boolean selPotatoMine = false;
 	static Plant selectedPlant = null;
 
 	static boolean playerStatus = true;
@@ -169,6 +173,7 @@ public class MainGame implements ActionListener {
 		}
 
 		void drawPlants(Graphics g) {
+			// draws every plant in board[][] array if not null
 			for (int y = 0; y < board.length; y++) {
 				for (int x = 0; x < board[y].length; x++) {
 					// if there is a plant on the tile, it'll display it
@@ -177,6 +182,22 @@ public class MainGame implements ActionListener {
 					}
 				}
 			}
+			// show which plant has been selected
+			if (selPeashooter) {
+				g.drawRect(270, 2, 140, 146);
+			}
+			if (selSnowpea) {
+				g.drawRect(470, 2, 140, 146);
+			}
+			if (selSunflower) {
+				g.drawRect(665, 2, 140, 146);
+			}
+			if (selWallnut) {
+				g.drawRect(865, 2, 125, 146);
+			}
+			if (selPotatoMine) {
+				g.drawRect(1065, 2, 140, 146);
+			}
 		}
 
 		@Override
@@ -184,23 +205,56 @@ public class MainGame implements ActionListener {
 			int x = e.getX();
 			int y = e.getY();
 
-			if (!selected) {
+			if (!selPeashooter && !selSnowpea && !selSunflower && !selWallnut && !selPotatoMine) {
 				if (x > 280 && x < 400 && y > 0 && y < 150) {
-					selectedPlant = new Peashooter();
+					selPeashooter = true;
 				}
 				if (x > 480 && x < 600 && y > 0 && y < 150) {
-					selectedPlant = new SnowPea();
+					selSnowpea = true;
 				}
 				if (x > 675 && x < 795 && y > 0 && y < 150) {
-					selectedPlant = new Sunflower();
+					selSunflower = true;
 				}
 				if (x > 875 && x < 980 && y > 0 && y < 150) {
-					selectedPlant = new Wallnut();
+					selWallnut = true;
 				}
 				if (x > 1075 && x < 1195 && y > 0 && y < 150) {
-					selectedPlant = new PotatoMine();
+					selPotatoMine = true;
 				}
-				selected = true;
+			}
+			// if any plant has been selected, then find the row & col of the next mouse
+			// click. If valid, then place selected plant on clicked upon tile
+			else {
+				int row = (y - lowY) / rowH;
+				int col = (x - lowX) / colW;
+				if (row >= 0 && row <= 4 && col >= 0 && col <= 8) {
+					if (selPeashooter) {
+						board[row][col] = new Peashooter();
+						selPeashooter = false;
+					}
+					if (selSnowpea) {
+						board[row][col] = new SnowPea();
+						selSnowpea = false;
+					}
+					if (selSunflower) {
+						board[row][col] = new Sunflower();
+						selSunflower = false;
+					}
+					if (selWallnut) {
+						board[row][col] = new Wallnut();
+						selWallnut = false;
+					}
+					if (selPotatoMine) {
+						board[row][col] = new PotatoMine();
+						selPotatoMine = false;
+					}
+				} else {
+					selPeashooter = false;
+					selSnowpea = false;
+					selSunflower = false;
+					selWallnut = false;
+					selPotatoMine = false;
+				}
 			}
 		}
 
@@ -240,8 +294,6 @@ public class MainGame implements ActionListener {
 		createandmoveZombies();
 		triggerMower();
 		shootandmovePeas();
-		// TODO this is placeholder code until we figure out what will happen when the
-		// level is completed
 
 		// when the amount of zombies are 0, it increases the level and reinstates the
 		// zombies
@@ -261,10 +313,10 @@ public class MainGame implements ActionListener {
 			snowpea.x += SnowPeaProjectile.velocity;
 		}
 		// every plant, if allowed, shoots
-		if (t % 150 == 0) {
-			for (int y = 0; y < board.length; y++) {
-				for (int x = 0; x < board[y].length; x++) {
-					if (board[y][x] != null) {
+		for (int y = 0; y < board.length; y++) {
+			for (int x = 0; x < board[y].length; x++) {
+				if (board[y][x] != null) {
+					if ((t - board[y][x].startTime) % 150 == 0) {
 						board[y][x].shoot(y, x);
 					}
 				}
@@ -373,11 +425,6 @@ public class MainGame implements ActionListener {
 		// goes through each zombie and moves them
 		for (int i = 0; i < zList.size(); i++) {
 			Zombie z = zList.get(i);
-			// x is AN INT value and therfore, double speed change values are troublesome as
-			// they might just get rounded down (as happens upon casting) and not actually
-			// change the speed
-			// TODO maybe make a double xx value that compliments x to act as a middle
-			// ground between moving it a double speed each second
 			z.xx -= z.speed;
 			z.x = (int) Math.round(z.xx);
 

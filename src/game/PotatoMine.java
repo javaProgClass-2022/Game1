@@ -9,6 +9,7 @@ class PotatoMine extends Plant {
 		int currentCharge = 0;
 		health = 1;
 		img = MainGame.loadImage("Photos/potato-mine.png");
+		startTime = MainGame.t;
 
 		if (currentCharge >= chargeTime) {
 // 		TODO Find zombie that intersects

@@ -7,11 +7,7 @@ class SnowPea extends Plant {
 	SnowPea() {
 		health = 10;
 		img = MainGame.loadImage("Photos/snow-pea.png");
-
-		// TODO Find zombie that intersects
-//		if (zombie.intersects this) {
-//			this.health-zombie.damage;
-//		}
+		startTime = MainGame.t;
 	}
 
 	@Override
