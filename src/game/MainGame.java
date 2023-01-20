@@ -243,8 +243,8 @@ public class MainGame implements ActionListener {
 			// if any plant has been selected, then find the row & col of the next mouse
 			// click. If valid, then place selected plant on clicked upon tile
 			else {
-				int row = (y - lowY) / rowH;
-				int col = (x - lowX) / colW;
+				int row = (y - LOWY) / ROWH;
+				int col = (x - LOWX) / COLW;
 				if (row >= 0 && row <= 4 && col >= 0 && col <= 8) {
 					if (selPeashooter) {
 						board[row][col] = new Peashooter();
@@ -349,10 +349,6 @@ public class MainGame implements ActionListener {
 			for (int y = 0; y < board.length; y++) {
 				for (int x = 0; x < board[y].length; x++) {
 					if (board[y][x] != null) {
-		for (int y = 0; y < board.length; y++) {
-			for (int x = 0; x < board[y].length; x++) {
-				if (board[y][x] != null) {
-					if ((t - board[y][x].startTime) % 150 == 0) {
 						board[y][x].shoot(y, x);
 					}
 				}
