@@ -5,11 +5,15 @@ public class FastZ extends Zombie {
 
 	FastZ(int rowIsIn) {
 		health = 20;
-		speed = 3;
+		speed = 2;
 		damage = 1;
 		height = 150;
 		width = 100;
-		img = MainGame.fastZ;
+		if (this.isSlowed) {
+			img = MainGame.FASTZSLOW;
+		} else {
+			img = MainGame.FASTZ;
+		}
 		this.rowIsIn = rowIsIn;
 	}
 }
