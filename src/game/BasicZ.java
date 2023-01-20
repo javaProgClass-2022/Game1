@@ -9,7 +9,11 @@ class BasicZ extends Zombie {
 		damage = 1;
 		height = 170;
 		width = 100;
-		img = MainGame.basicZ;
+		if (this.isSlowed) {
+			img = MainGame.BASICZSLOW;
+		} else {
+			img = MainGame.BASICZ;
+		}
 		this.rowIsIn = rowIsIn;
 	}
 }
