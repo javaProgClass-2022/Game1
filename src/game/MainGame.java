@@ -49,11 +49,7 @@ public class MainGame implements ActionListener {
 	final static BufferedImage fastZ = loadImage("Photos/fastZ.png");
 	final static BufferedImage bruteZ = loadImage("Photos/bruteZ.png");
 
-	static boolean selPeashooter = false;
-	static boolean selSnowpea = false;
-	static boolean selSunflower = false;
-	static boolean selWallnut = false;
-	static boolean selPotatoMine = false;
+	static boolean selectedPlants[] = { false, false, false, false, false };
 	static Plant selectedPlant = null;
 
 	static boolean playerStatus = true;
@@ -183,19 +179,19 @@ public class MainGame implements ActionListener {
 				}
 			}
 			// show which plant has been selected
-			if (selPeashooter) {
+			if (selectedPlants[0]) {
 				g.drawRect(270, 2, 140, 146);
 			}
-			if (selSnowpea) {
+			if (selectedPlants[1]) {
 				g.drawRect(470, 2, 140, 146);
 			}
-			if (selSunflower) {
+			if (selectedPlants[2]) {
 				g.drawRect(665, 2, 140, 146);
 			}
-			if (selWallnut) {
+			if (selectedPlants[3]) {
 				g.drawRect(865, 2, 125, 146);
 			}
-			if (selPotatoMine) {
+			if (selectedPlants[4]) {
 				g.drawRect(1065, 2, 140, 146);
 			}
 		}
@@ -205,55 +201,55 @@ public class MainGame implements ActionListener {
 			int x = e.getX();
 			int y = e.getY();
 
-			if (!selPeashooter && !selSnowpea && !selSunflower && !selWallnut && !selPotatoMine) {
+			if (!selectedPlants[0] && !selectedPlants[1] && !selectedPlants[2] && !selectedPlants[3]
+					&& !selectedPlants[4]) {
 				if (x > 280 && x < 400 && y > 0 && y < 150) {
-					selPeashooter = true;
+					selectedPlants[0] = true;
 				}
 				if (x > 480 && x < 600 && y > 0 && y < 150) {
-					selSnowpea = true;
+					selectedPlants[1] = true;
 				}
 				if (x > 675 && x < 795 && y > 0 && y < 150) {
-					selSunflower = true;
+					selectedPlants[2] = true;
 				}
 				if (x > 875 && x < 980 && y > 0 && y < 150) {
-					selWallnut = true;
+					selectedPlants[3] = true;
 				}
 				if (x > 1075 && x < 1195 && y > 0 && y < 150) {
-					selPotatoMine = true;
+					selectedPlants[4] = true;
 				}
 			}
+
 			// if any plant has been selected, then find the row & col of the next mouse
 			// click. If valid, then place selected plant on clicked upon tile
 			else {
 				int row = (y - lowY) / rowH;
 				int col = (x - lowX) / colW;
 				if (row >= 0 && row <= 4 && col >= 0 && col <= 8) {
-					if (selPeashooter) {
+					if (selectedPlants[0]) {
 						board[row][col] = new Peashooter();
-						selPeashooter = false;
+						selectedPlants[0] = false;
 					}
-					if (selSnowpea) {
+					if (selectedPlants[1]) {
 						board[row][col] = new SnowPea();
-						selSnowpea = false;
+						selectedPlants[1] = false;
 					}
-					if (selSunflower) {
+					if (selectedPlants[2]) {
 						board[row][col] = new Sunflower();
-						selSunflower = false;
+						selectedPlants[2] = false;
 					}
-					if (selWallnut) {
+					if (selectedPlants[3]) {
 						board[row][col] = new Wallnut();
-						selWallnut = false;
+						selectedPlants[3] = false;
 					}
-					if (selPotatoMine) {
+					if (selectedPlants[4]) {
 						board[row][col] = new PotatoMine();
-						selPotatoMine = false;
+						selectedPlants[4] = false;
 					}
 				} else {
-					selPeashooter = false;
-					selSnowpea = false;
-					selSunflower = false;
-					selWallnut = false;
-					selPotatoMine = false;
+					for (boolean s : selectedPlants) {
+						s = false;
+					}
 				}
 			}
 		}
