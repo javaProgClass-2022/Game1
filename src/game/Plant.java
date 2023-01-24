@@ -3,7 +3,7 @@ package game;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-abstract class Plant {
+abstract class Plant extends Rectangle{
 	int cost, health, speed, startTime;
 	BufferedImage img;
 

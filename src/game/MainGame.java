@@ -249,6 +249,8 @@ public class MainGame implements ActionListener {
 						board[row][col] = new PotatoMine();
 						selectedPlants[4] = false;
 					}
+					board[row][col].x = col * colW + lowX;
+					board[row][col].y = row * rowH + lowY;
 				} else {
 					for (int j = 0; j < selectedPlants.length; j++) {
 						selectedPlants[j] = false;
@@ -424,8 +426,11 @@ public class MainGame implements ActionListener {
 		// goes through each zombie and moves them
 		for (int i = 0; i < zList.size(); i++) {
 			Zombie z = zList.get(i);
-			z.xx -= z.speed;
-			z.x = (int) Math.round(z.xx);
+			// if zombie is not stuck at a plant, move it
+			if (!z.isStuck) {
+				z.xx -= z.speed;
+				z.x = (int) Math.round(z.xx);
+			}
 
 			// if the zombie is dead, then it removes it from the list
 			if (z.health <= 0) {
