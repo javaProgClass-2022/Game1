@@ -47,6 +47,9 @@ public class MainGame implements ActionListener {
 	final static BufferedImage WALLNUT2 = loadImage("Photos/WallnutExtra/WallnutDamage1.png");
 	final static BufferedImage WALLNUT3 = loadImage("Photos/WallnutExtra/WallnutDamage2.png");
 
+	static boolean selectedPlants[] = { false, false, false, false, false };
+	static Plant selectedPlant = null;
+
 	// pea photos
 	final static BufferedImage PEAPROJECTILE = loadImage("Photos/Peas/pea.png");
 	final static BufferedImage SNOWPEAPROJECTILE = loadImage("Photos/Peas/snowy_pea.png");
@@ -59,22 +62,31 @@ public class MainGame implements ActionListener {
 	final static BufferedImage BRUTEZ = loadImage("Photos/bruteZ.png");
 	final static BufferedImage BRUTEZSLOW = loadImage("Photos//SlowedZombies/bruteZslow.png");
 
-	static boolean selectedPlants[] = { false, false, false, false, false };
-	static Plant selectedPlant = null;
+	//event photos
+	final static BufferedImage STARTSCREEN = loadImage("Photos/StartScreen.png");
+	final static BufferedImage DEATHSCREEN = loadImage("Photos/DeathScreen.png");
+	final static BufferedImage NEXTLEVELSCREEN = loadImage("Photos/nextLevel.png");
 
+
+	final static double sunIncriment = 15.0;
 	static boolean playerStatus = true;
-	static int sun = 100;
+	static double sun = 100;
 	static int t = 0;
 	static int level = 1;
 	static int zCount = level * 10; // amount of zombies in each level
+	static boolean nextLevelScreen = false;
+	static boolean start = true;
+	static final int SCREENTIME = 500;
+
+
 
 	static ArrayList<Zombie> zList = new ArrayList<Zombie>();
 	static Lawnmower mowList[] = new Lawnmower[5];
 	static ArrayList<PeaProjectile> normalPeaList = new ArrayList<PeaProjectile>();
 	static ArrayList<SnowPeaProjectile> snowPeaList = new ArrayList<SnowPeaProjectile>();
+	static ArrayList<Sun> sunList = new ArrayList<Sun>();
 
 	static Plant board[][] = new Plant[5][9];
-
 	// for the 2d array:
 	// X RANGE: 260 - 1030, 9 columns each 86 wide
 	// Y RANGE: 230 - 770, 5 rows each 108 tall
@@ -91,13 +103,12 @@ public class MainGame implements ActionListener {
 
 	// constructor
 	MainGame() {
-		// FIXME Debug
-		board[0][8] = new Sunflower();
-		board[1][8] = new SnowPea();
-		board[2][8] = new Peashooter();
-		board[3][8] = new Wallnut();
-		board[4][8] = new PotatoMine();
-
+		board[0][0] = new Peashooter();
+		board[1][0] = new SnowPea();
+		board[2][0] = new Wallnut();
+		board[3][0] = new Sunflower();
+		board[4][0] = new PotatoMine();
+		board[0][3] = new Sunflower();
 		createAndShowGUI();
 		lawnMowerCreation();
 		startTimer();
@@ -150,13 +161,29 @@ public class MainGame implements ActionListener {
 			g.drawImage(POTATOMINE, 1075, 0, 120, 120, null);
 			g.drawImage(SUNIMG, 10, 0, 150, 150, null);
 			g.setFont(new Font("Montferrato", Font.BOLD, 36));
-			g.drawString((sun + ""), 170, 85);
+			g.drawString(((int)sun + ""), 170, 85);
 
 			drawPlants(g);
 			drawPeas(g);
 			drawMovers(g);
 			drawZombies(g);
+			drawSun(g);
+			if(nextLevelScreen) nextLevel(g);
+			if(start) startScreen(g);
+			if(!playerStatus) deathScreen(g);
 		}
+
+		void nextLevel(Graphics g) {
+			g.drawImage(NEXTLEVELSCREEN, 0, 0, PANW, PANH, null);
+		}
+
+		void deathScreen(Graphics g) {
+			g.drawImage(DEATHSCREEN, 0, 0, PANW, PANH, null);
+		}
+
+		void startScreen(Graphics g) {
+			g.drawImage(STARTSCREEN, 0, 0, PANW, PANH, null);
+		}		
 
 		void drawPeas(Graphics g) {
 			for (PeaProjectile pea : normalPeaList) {
@@ -168,19 +195,21 @@ public class MainGame implements ActionListener {
 		}
 
 		void drawZombies(Graphics g) {
-			for (Zombie zomb : zList) {
-				g.drawImage(zomb.img, zomb.x, zomb.y, zomb.width, zomb.height, null);
+			for (int x = 0; x < zList.size(); x++) {
+				g.drawImage(zList.get(x).img, zList.get(x).x, zList.get(x).y, zList.get(x).width, zList.get(x).height,
+						null);
 			}
 		}
 
 		void drawMovers(Graphics g) {
-			for (Lawnmower mower : mowList) {
-				if (mower != null) {
-					if (mower.x >= PANW) {
-						mower = null;
+			for (int x = 0; x < mowList.length; x++) {
+				if (mowList[x] != null) {
+					if (mowList[x].x >= PANW) {
+						mowList[x] = null;
 					}
-					if (mower != null) {
-						g.drawImage(mower.img, mower.x, mower.y, mower.width, mower.height, null);
+					if (mowList[x] != null) {
+						g.drawImage(mowList[x].img, mowList[x].x, mowList[x].y, mowList[x].width, mowList[x].height,
+								null);
 					}
 				}
 			}
@@ -214,10 +243,25 @@ public class MainGame implements ActionListener {
 			}
 		}
 
+		void drawSun(Graphics g) {
+			for(int i = 0; i < sunList.size(); i++) {
+				Sun sun = sunList.get(i);
+				g.drawImage(sun.img, sun.x, sun.y, sun.width, sun.height, null);
+			}
+		}
+
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			int x = e.getX();
 			int y = e.getY();
+
+			for(Sun sunny : sunList) {
+				if(x >= sunny.x-sunny.width && x <= sunny.x+sunny.width && y >= sunny.y-sunny.height && y <= sunny.y+sunny.height) {
+					sun+=sunIncriment;
+					sunList.remove(sunny);
+					break;
+				}
+			}
 
 			if (!selectedPlants[0] && !selectedPlants[1] && !selectedPlants[2] && !selectedPlants[3]
 					&& !selectedPlants[4]) {
@@ -305,21 +349,53 @@ public class MainGame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		t++;
-		createandmoveZombies();
-		triggerMower();
-		plantZombieIntersect();
-		checkPotatoCharge();
-		// when the amount of zombies are 0, it increases the level and reinstates the
-		// zombies
-		shootandmovePeas();
-		plantZombieIntersect();
-		checkPotatoCharge();
-		// when the amount of zombies are 0, it increases the level and reinstates the
-		// zombies
 		if (zCount < 0 && playerStatus) {
 			level++;
 			zCount = level * 10;
+			nextLevelScreen = true;
+			for(int i = 0; i < zList.size(); i++) {
+				zList.remove(i);
+			}
+			t = 0;
 		}
+		if(t <= SCREENTIME) {
+			if(t == SCREENTIME) {
+				if(nextLevelScreen) nextLevelScreen = false;
+				if(!playerStatus) {
+					level = 0;
+					playerStatus = true;
+					lawnMowerCreation();
+					for(int i = 0; i < zList.size(); i++) {
+						zList.remove(i);
+					}
+					createandmoveZombies();
+				} 
+				else start = false;
+			}
+		}
+		else {
+			createandmoveZombies();
+			triggerMower();
+			plantZombieIntersect();
+			checkPotatoCharge();
+			// when the amount of zombies are 0, it increases the level and reinstates the
+			// zombies
+			shootandmovePeas();
+			plantZombieIntersect();
+			checkPotatoCharge();
+			// every plant, if allowed, shoots
+			if (t % 150 == 0) {
+				for (int y = 0; y < board.length; y++) {
+					for (int x = 0; x < board[y].length; x++) {
+						if (board[y][x] != null) {
+							board[y][x].shoot(y, x);
+						}
+					}
+				}
+			}
+			sun+=0.0025;
+		}
+
 		panel.repaint();
 	}
 
@@ -334,6 +410,37 @@ public class MainGame implements ActionListener {
 				}
 			}
 		}
+	}
+
+	public void checkSunOnScreen() {
+		for(Sun sunny : sunList) {
+			sunny.timeRemaining--;
+			if(sunny.timeRemaining < 0) sunList.remove(sunny);
+			break;
+		}
+	}
+
+	public void sunFlowerCheck() {
+		for(int i = 0; i < board.length; i++) {
+			for(int j = 0; j < board[i].length; j++) {
+				if (board[i][j] instanceof Sunflower ) {
+					board[i][j].startTime++;
+					if(board[i][j].startTime%2000 == 0) {
+						createSun();
+					}
+				}
+			}
+		}
+	}
+
+	//creates sun, generates a random sun on screen and adds it to the sun list
+	public void createSun() {
+		int x = (int) (Math.random()*PANW);
+		int y = (int) (Math.random()*PANH-150);
+		Sun sun = new Sun();
+		sun.x = x;
+		sun.y = y;
+		sunList.add(sun);
 	}
 
 	void shootandmovePeas() {
@@ -419,7 +526,7 @@ public class MainGame implements ActionListener {
 		}
 	}
 
-	// triggers mower
+
 	void triggerMower() {
 		for (int i = 0; i < mowList.length; i++) {
 			if (mowList[i] != null) {
@@ -508,7 +615,8 @@ public class MainGame implements ActionListener {
 			if (z.x <= 170) {
 				zList.remove(z);
 				// TODO make actual game end screen
-				System.out.println("THUS ENDS THE GAME");
+				playerStatus = false;
+				t = 0;
 			}
 		}
 	}
