@@ -76,29 +76,42 @@ public class MainGame implements ActionListener {
 	static final int rowH = 108;
 
 	/***** instance variables (global) *****/
-	DrawingPanel panel = new DrawingPanel();
+	DrawingPanel panelGame = new DrawingPanel();
 
 	// constructor
 	MainGame() {
+		// openStartMenu();
 		createAndShowGUI();
 		lawnMowerCreation();
 		startTimer();
 	}
 
-	void createAndShowGUI() {
-		JFrame frame = new JFrame("Awesome game!");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
+	void openStartMenu() {
+		JFrame frameStart = new JFrame("Welcome to Bootleg Plants vs Zombies");
+		frameStart.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameStart.setResizable(false);
+		JPanel panelStart = new JPanel();
 
-		frame.add(panel);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		frameStart.add(panelStart);
+		frameStart.pack();
+		frameStart.setLocationRelativeTo(null);
+		frameStart.setVisible(true);
+	}
+
+	void createAndShowGUI() {
+		JFrame frameGame = new JFrame("Awesome game!");
+		frameGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameGame.setResizable(false);
+
+		frameGame.add(panelGame);
+		frameGame.pack();
+		frameGame.setLocationRelativeTo(null);
+		frameGame.setVisible(true);
 	}
 
 	void startTimer() {
 		Timer timer = new Timer(1, this);
-		timer.setInitialDelay(1000);
+		timer.setInitialDelay(0000);
 		timer.start();
 	}
 
@@ -119,7 +132,7 @@ public class MainGame implements ActionListener {
 
 			// sets up base menu and game board
 			g.drawImage(BKG1, 0, 150, getWidth(), 650, null);
-			g.drawImage(PEASHOOTER, 280, 0, 120, 120, null);
+			g.drawImage(PEASHOOTER, 275, 0, 120, 120, null);
 			g.setFont(new Font("Montferrato", Font.PLAIN, 18));
 			g.drawString("100", 330, 142);
 			g.drawString("175", 530, 142);
@@ -127,7 +140,7 @@ public class MainGame implements ActionListener {
 			g.drawString("50", 725, 142);
 			g.drawImage(SUNFLOWER, 675, 0, 120, 120, null);
 			g.drawString("50", 920, 142);
-			g.drawImage(WALLNUT, 875, 0, 105, 120, null);
+			g.drawImage(WALLNUT, 885, 0, 105, 120, null);
 			g.drawString("25", 1125, 142);
 			g.drawImage(POTATOMINE, 1075, 0, 120, 120, null);
 			g.drawImage(SUNIMG, 10, 0, 150, 150, null);
@@ -179,20 +192,10 @@ public class MainGame implements ActionListener {
 				}
 			}
 			// show which plant has been selected
-			if (selectedPlants[0]) {
-				g.drawRect(270, 2, 140, 146);
-			}
-			if (selectedPlants[1]) {
-				g.drawRect(470, 2, 140, 146);
-			}
-			if (selectedPlants[2]) {
-				g.drawRect(665, 2, 140, 146);
-			}
-			if (selectedPlants[3]) {
-				g.drawRect(865, 2, 125, 146);
-			}
-			if (selectedPlants[4]) {
-				g.drawRect(1065, 2, 140, 146);
+			for (int i = 0; i < selectedPlants.length; i++) {
+				if (selectedPlants[i]) {
+					g.drawRect(i * 200 + 265, 2, 140, 146);
+				}
 			}
 		}
 
@@ -297,7 +300,7 @@ public class MainGame implements ActionListener {
 			level++;
 			zCount = level * 10;
 		}
-		panel.repaint();
+		panelGame.repaint();
 	}
 
 	void shootandmovePeas() {
