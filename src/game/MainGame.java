@@ -252,6 +252,13 @@ public class MainGame implements ActionListener {
 			}
 		}
 
+		void drawSun(Graphics g) {
+			for(int i = 0; i < sunList.size(); i++) {
+				Sun sun = sunList.get(i);
+				g.drawImage(sun.img, sun.x, sun.y, sun.width, sun.height, null);
+			}
+		}
+
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			int x = e.getX();
