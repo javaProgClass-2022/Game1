@@ -20,7 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.event.MouseInputListener;
 
 public class MainGame implements ActionListener {
 	public static void main(String[] args) {
@@ -34,26 +33,40 @@ public class MainGame implements ActionListener {
 	/***** constants *****/
 	final static int PANW = 1450;
 	final static int PANH = 800;
-	final static BufferedImage bkg1 = loadImage("Photos/BackGround1.jpg");
-	final static BufferedImage sunIMG = loadImage("Photos/sun.png");
-	final static BufferedImage lawnMower = loadImage("Photos/lawnmower.png");
+	final static BufferedImage BKG1 = loadImage("Photos/BackGround1.jpg");
+	final static BufferedImage SUNIMG = loadImage("Photos/sun.png");
+	final static BufferedImage LAWNMOWER = loadImage("Photos/lawnmower.png");
 
 	// plant photos
-	final static BufferedImage peashooter = loadImage("Photos/peashooter.png");
-	final static BufferedImage potatomine = loadImage("Photos/potato-mine.png");
-	final static BufferedImage snowpea = loadImage("Photos/snow-pea.png");
-	final static BufferedImage sunflower = loadImage("Photos/sunflower.png");
-	final static BufferedImage wallnut = loadImage("Photos/wall-nut.png");
+	final static BufferedImage PEASHOOTER = loadImage("Photos/peashooter.png");
+	final static BufferedImage POTATOMINE = loadImage("Photos/potato-mine.png");
+	final static BufferedImage POTATOMINECHARGING = loadImage("Photos/potato_mine_charging.png");
+	final static BufferedImage SNOWPEA = loadImage("Photos/snow-pea.png");
+	final static BufferedImage SUNFLOWER = loadImage("Photos/sunflower.png");
+	final static BufferedImage WALLNUT1 = loadImage("Photos/wall-nut.png");
+	final static BufferedImage WALLNUT2 = loadImage("Photos/WallnutExtra/WallnutDamage1.png");
+	final static BufferedImage WALLNUT3 = loadImage("Photos/WallnutExtra/WallnutDamage2.png");
 
 	static boolean selectedPlants[] = { false, false, false, false, false };
 	static Plant selectedPlant = null;
 
-	// zombie photos
-	final static BufferedImage basicZ = loadImage("Photos/basicZ.png");
-	final static BufferedImage fastZ = loadImage("Photos/fastZ.png");
-	final static BufferedImage bruteZ = loadImage("Photos/bruteZ.png");
+	// pea photos
+	final static BufferedImage PEAPROJECTILE = loadImage("Photos/Peas/pea.png");
+	final static BufferedImage SNOWPEAPROJECTILE = loadImage("Photos/Peas/snowy_pea.png");
 
-	
+	// zombie photos
+	final static BufferedImage BASICZ = loadImage("Photos/basicZ.png");
+	final static BufferedImage BASICZSLOW = loadImage("Photos/SlowedZombies/basicZslow.png");
+	final static BufferedImage FASTZ = loadImage("Photos/fastZ.png");
+	final static BufferedImage FASTZSLOW = loadImage("Photos/SlowedZombies/fastZslow.png");
+	final static BufferedImage BRUTEZ = loadImage("Photos/bruteZ.png");
+	final static BufferedImage BRUTEZSLOW = loadImage("Photos//SlowedZombies/bruteZslow.png");
+
+	//event photos
+	final static BufferedImage STARTSCREEN = loadImage("Photos/StartScreen.png");
+	final static BufferedImage DEATHSCREEN = loadImage("Photos/DeathScreen.png");
+
+
 	final static double sunIncriment = 15.0;
 	static boolean playerStatus = true;
 	static double sun = 100;
@@ -74,12 +87,12 @@ public class MainGame implements ActionListener {
 	// X RANGE: 260 - 1030, 9 columns each 86 wide
 	// Y RANGE: 230 - 770, 5 rows each 108 tall
 	// these values make sure that the images look okay in every space
-	static final int lowX = 255;
-	static final int highX = 1030;
-	static final int lowY = 220;
-	static final int highY = 770;
-	static final int colW = 85;
-	static final int rowH = 108;
+	static final int LOWX = 255;
+	static final int HIGHX = 1030;
+	static final int LOWY = 220;
+	static final int HIGHY = 770;
+	static final int COLW = 85;
+	static final int ROWH = 108;
 
 	/***** instance variables (global) *****/
 	DrawingPanel panel = new DrawingPanel();
@@ -130,19 +143,19 @@ public class MainGame implements ActionListener {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 			// sets up base menu and game board
-			g.drawImage(bkg1, 0, 150, getWidth(), 650, null);
-			g.drawImage(peashooter, 280, 0, 120, 120, null);
+			g.drawImage(BKG1, 0, 150, getWidth(), 650, null);
+			g.drawImage(PEASHOOTER, 280, 0, 120, 120, null);
 			g.setFont(new Font("Montferrato", Font.PLAIN, 18));
 			g.drawString("100", 330, 142);
 			g.drawString("175", 530, 142);
-			g.drawImage(snowpea, 480, 0, 120, 120, null);
+			g.drawImage(SNOWPEA, 480, 0, 120, 120, null);
 			g.drawString("50", 725, 142);
-			g.drawImage(sunflower, 675, 0, 120, 120, null);
+			g.drawImage(SUNFLOWER, 675, 0, 120, 120, null);
 			g.drawString("50", 920, 142);
-			g.drawImage(wallnut, 875, 0, 105, 120, null);
+			g.drawImage(WALLNUT1, 875, 0, 105, 120, null);
 			g.drawString("25", 1125, 142);
-			g.drawImage(potatomine, 1075, 0, 120, 120, null);
-			g.drawImage(sunIMG, 10, 0, 150, 150, null);
+			g.drawImage(POTATOMINE, 1075, 0, 120, 120, null);
+			g.drawImage(SUNIMG, 10, 0, 150, 150, null);
 			g.setFont(new Font("Montferrato", Font.BOLD, 36));
 			g.drawString(((int)sun + ""), 170, 85);
 
@@ -153,16 +166,25 @@ public class MainGame implements ActionListener {
 			drawSun(g);
 		}
 
+		void nextLevel(Graphics g) {
+			g.setColor(Color.BLACK);
+			g.fillRect(0,0,PANW, PANH);
+		}
+
+		void deathScreen(Graphics g) {
+			g.drawImage(DEATHSCREEN, 0, 0, PANW, PANH, null);
+		}
+
+		void startScreen(Graphics g) {
+			g.drawImage(STARTSCREEN, 0, 0, PANW, PANH, null);
+		}		
+
 		void drawPeas(Graphics g) {
-			for (int x = 0; x < normalPeaList.size(); x++) {
-				g.drawImage(normalPeaList.get(x).img, normalPeaList.get(x).x, normalPeaList.get(x).y,
-						PeaProjectile.side, PeaProjectile.side, null);
-				normalPeaList.get(x).movePea();
+			for (PeaProjectile pea : normalPeaList) {
+				g.drawImage(pea.img, pea.x, pea.y, pea.width, pea.height, null);
 			}
-			for (int x = 0; x < snowPeaList.size(); x++) {
-				g.drawImage(snowPeaList.get(x).img, snowPeaList.get(x).x, snowPeaList.get(x).y, SnowPeaProjectile.side,
-						SnowPeaProjectile.side, null);
-				snowPeaList.get(x).movePea();
+			for (SnowPeaProjectile snowpea : snowPeaList) {
+				g.drawImage(snowpea.img, snowpea.x, snowpea.y, snowpea.width, snowpea.height, null);
 			}
 		}
 
@@ -193,7 +215,7 @@ public class MainGame implements ActionListener {
 				for (int x = 0; x < board[y].length; x++) {
 					// if there is a plant on the tile, it'll display it
 					if (board[y][x] != null) {
-						g.drawImage(board[y][x].img, lowX + (x * colW), lowY + (y * rowH), colW, rowH, null);
+						g.drawImage(board[y][x].img, LOWX + (x * COLW), LOWY + (y * ROWH), COLW, ROWH, null);
 					}
 				}
 			}
@@ -214,7 +236,7 @@ public class MainGame implements ActionListener {
 				g.drawRect(1065, 2, 140, 146);
 			}
 		}
-		
+
 		void drawSun(Graphics g) {
 			for(int i = 0; i < sunList.size(); i++) {
 				Sun sun = sunList.get(i);
@@ -226,7 +248,7 @@ public class MainGame implements ActionListener {
 		public void mouseClicked(MouseEvent e) {
 			int x = e.getX();
 			int y = e.getY();
-			
+
 			for(Sun sunny : sunList) {
 				if(x >= sunny.x-sunny.width && x <= sunny.x+sunny.width && y >= sunny.y-sunny.height && y <= sunny.y+sunny.height) {
 					sun+=sunIncriment;
@@ -257,8 +279,8 @@ public class MainGame implements ActionListener {
 			// if any plant has been selected, then find the row & col of the next mouse
 			// click. If valid, then place selected plant on clicked upon tile
 			else {
-				int row = (y - lowY) / rowH;
-				int col = (x - lowX) / colW;
+				int row = (y - LOWY) / ROWH;
+				int col = (x - LOWX) / COLW;
 				if (row >= 0 && row <= 4 && col >= 0 && col <= 8) {
 					if (selectedPlants[0]) {
 						board[row][col] = new Peashooter();
@@ -321,15 +343,15 @@ public class MainGame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		t++;
-		initializeZombies();
+		createandmoveZombies();
 		triggerMower();
-		sunFlowerCheck();
-		checkSunOnScreen();
+		plantZombieIntersect();
+		checkPotatoCharge();
 		// when the amount of zombies are 0, it increases the level and reinstates the
 		// zombies
-		// TODO this is placeholder code until we figure out what will happen when the
-		// level is completed
-
+		shootandmovePeas();
+		plantZombieIntersect();
+		checkPotatoCharge();
 		// every plant, if allowed, shoots
 		if (t % 150 == 0) {
 			for (int y = 0; y < board.length; y++) {
@@ -342,11 +364,40 @@ public class MainGame implements ActionListener {
 		}
 
 		if (zCount < 0 && playerStatus) {
+			t = 0;
 			level++;
 			zCount = level * 10;
 		}
+		
+		if(!playerStatus) t = 0;
+		if(t <= 500) {
+			if(!playerStatus) {
+				
+			}
+			else {
+				
+			}
+			if(t == 500) {
+				playerStatus = true;
+				level = 1;
+			}
+		}
+		
 		sun+=0.0025;
 		panel.repaint();
+	}
+	
+	private void checkPotatoCharge() {
+		for (int y = 0; y < board.length; y++) {
+			for (int x = 0; x < board[y].length; x++) {
+				if (board[y][x] instanceof PotatoMine) {
+					board[y][x].chargeAmount++;
+					if (board[y][x].chargeAmount == 300) {
+						board[y][x].charged = true;
+					}
+				}
+			}
+		}
 	}
 
 	public void checkSunOnScreen() {
@@ -356,7 +407,7 @@ public class MainGame implements ActionListener {
 			break;
 		}
 	}
-	
+
 	public void sunFlowerCheck() {
 		for(int i = 0; i < board.length; i++) {
 			for(int j = 0; j < board[i].length; j++) {
@@ -370,6 +421,7 @@ public class MainGame implements ActionListener {
 		}
 	}
 
+	//creates sun, generates a random sun on screen and adds it to the sun list
 	public void createSun() {
 		int x = (int) (Math.random()*PANW);
 		int y = (int) (Math.random()*PANH-150);
@@ -379,7 +431,91 @@ public class MainGame implements ActionListener {
 		sunList.add(sun);
 	}
 
-	public void triggerMower() {
+	void shootandmovePeas() {
+		// moves peas
+		for (PeaProjectile pea : normalPeaList) {
+			pea.x += PeaProjectile.velocity;
+		}
+		for (SnowPeaProjectile snowpea : snowPeaList) {
+			snowpea.x += SnowPeaProjectile.velocity;
+		}
+		// every plant, if allowed, shoots
+		if (t % 200 == 0) {
+			for (int y = 0; y < board.length; y++) {
+				for (int x = 0; x < board[y].length; x++) {
+					if (board[y][x] != null) {
+						board[y][x].shoot(y, x);
+					}
+				}
+			}
+		}
+		// take the normal pea list and if any of it intersects with any zombie, make
+		// the latter take damage
+		for (int i = 0; i < normalPeaList.size(); i++) {
+			PeaProjectile pea = normalPeaList.get(i);
+			for (int j = 0; j < zList.size(); j++) {
+				Zombie zomb = zList.get(j);
+				if (pea.intersects(zomb)) {
+					zomb.health -= PeaProjectile.damage;
+					normalPeaList.remove(pea);
+				}
+			}
+		}
+		// take the snowpea list and if any of it intersects with any zombie, do a
+		// smaller amount of damage, but lower velocity. This only happens once to a
+		// zombie
+		for (int i = 0; i < snowPeaList.size(); i++) {
+			SnowPeaProjectile snowpea = snowPeaList.get(i);
+			for (int j = 0; j < zList.size(); j++) {
+				Zombie zomb = zList.get(j);
+				if (snowpea.intersects(zomb)) {
+					zomb.health -= SnowPeaProjectile.damage;
+					if (zomb.isSlowed == false) {
+						zomb.speed *= 0.66;
+						zomb.isSlowed = true;
+					}
+					snowPeaList.remove(snowpea);
+				}
+			}
+		}
+	}
+
+	void plantZombieIntersect() {
+		// if zombie insersects plant, stops and plant takes damage every seconf
+		for (int x = 0; x < board.length; x++) {
+			for (int i = 0; i < board.length; i++) {
+				if (board[x][i] == null) {
+					continue;
+				}
+				Plant currentPlant = board[x][i];
+				for (int j = 0; j < zList.size(); j++) {
+					Zombie zomb = zList.get(j);
+					if (!currentPlant.intersects(zomb)) {
+						if (zomb instanceof BasicZ) {
+							zomb.speed = 1;
+						}
+						if (zomb instanceof BruteZ) {
+							zomb.speed = 0.5;
+						}
+						if (zomb instanceof FastZ) {
+							zomb.speed = 2;
+						}
+						continue;
+					}
+					zomb.speed = 0;
+					if (t % 60 == 0) {
+						currentPlant.takeDamage(zomb);
+						if (currentPlant.health <= 0) { // Removes plant if it dies
+							board[x][i] = null;
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	void triggerMower() {
 		for (int i = 0; i < mowList.length; i++) {
 			if (mowList[i] != null) {
 				Lawnmower mower = mowList[i];
@@ -388,14 +524,14 @@ public class MainGame implements ActionListener {
 					int lawnrow = i;
 					// zomb.y is the higher range of the space between zombie's y coordinate and the
 					// rest is the lowest y coordinate a zombie can be at
-					int zombrow = (zomb.y - lowY - rowH + zomb.height) / rowH;
-					if (zombrow == lawnrow && zomb.x <= 170) {
+					int zombrow = (zomb.y - LOWY - ROWH + zomb.height) / ROWH;
+					if (zombrow == lawnrow && zomb.x <= 175) {
 						mower.triggered = true;
-						zList.remove(j);
 					}
 				}
 			}
 		}
+		// allows triggered motors to kill zombies in its row
 		for (int i = 0; i < mowList.length; i++) {
 			if (mowList[i] != null) {
 				Lawnmower mower = mowList[i];
@@ -412,17 +548,16 @@ public class MainGame implements ActionListener {
 		}
 	}
 
-	public void lawnMowerCreation() {
+	void lawnMowerCreation() {
 		for (int i = 0; i < 5; i++) {
 			Lawnmower m = new Lawnmower();
 			m.x = 170 - i * 2;
-			m.y = lowY + i * rowH;
+			m.y = LOWY + i * ROWH;
 			mowList[i] = m;
 		}
 	}
 
-	public void initializeZombies() {
-
+	void createandmoveZombies() {
 		// creates a zombie every 2 seconds
 		if (t % 200 == 0 && zCount >= 0) {
 
@@ -440,21 +575,35 @@ public class MainGame implements ActionListener {
 				c = new BruteZ(row);
 			}
 			c.x = PANW;
-			c.y = lowY + row * rowH + rowH - c.height;
+			c.xx = c.x;
+			c.y = LOWY + row * ROWH + ROWH - c.height;
 			zList.add(c);
 
 			// decreases the zombie count when one is created
 			zCount--;
 		}
 
-		// going through each zombie and moving them
+		// goes through each zombie and moves them
 		for (int i = 0; i < zList.size(); i++) {
 			Zombie z = zList.get(i);
-			z.x -= z.speed;
+			// x is AN INT value and therefore, double speed change values are troublesome
+			// as
+			// they might just get rounded down (as happens upon casting) and not actually
+			// change the speed
+			// TODO maybe make a double xx value that compliments x to act as a middle
+			// ground between moving it a double speed each second
+			z.xx -= z.speed;
+			z.x = (int) Math.round(z.xx);
 
 			// if the zombie is dead, then it removes it from the list
 			if (z.health <= 0) {
 				zList.remove(z);
+			}
+			// if zombie hits left without a mower, game ends
+			if (z.x <= 170) {
+				zList.remove(z);
+				// TODO make actual game end screen
+				playerStatus = false;
 			}
 		}
 	}
