@@ -317,6 +317,8 @@ public class MainGame implements ActionListener {
 						board[row][col] = new PotatoMine();
 						selectedPlants[4] = false;
 					}
+					board[row][col].x = col * colW + lowX;
+					board[row][col].y = row * rowH + lowY;
 				} else {
 					for (int j = 0; j < selectedPlants.length; j++) {
 						selectedPlants[j] = false;
@@ -358,6 +360,13 @@ public class MainGame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		t++;
+		createandmoveZombies();
+		seeIfZombieStuck();
+		triggerMower();
+		shootandmovePeas();
+
+		// when the amount of zombies are 0, it increases the level and reinstates the
+		// zombies
 		if (zCount < 0 && playerStatus) {
 			level++;
 			zCount = level * 10;
@@ -406,6 +415,32 @@ public class MainGame implements ActionListener {
 		}
 
 		panel.repaint();
+	}
+
+	void seeIfZombieStuck() {
+		// for every row, finds the rightmost x value encompassed by the plant
+		int rightmostX[] = new int[board.length];
+		for (int y = 0; y < board.length; y++) {
+			for (int x = 0; x < board[y].length; x++) {
+				Plant p = board[y][x];
+				if (p == null) {
+					continue;
+				}
+				if (p.x + colW > rightmostX[y]) {
+					rightmostX[y] = p.x + colW;
+				}
+			}
+		}
+
+		// if zombie's x reached this rightmost value (of respective row), then zombie
+		// gets stuck, otherwise is unstuck
+		for (Zombie z : zList) {
+			if (z.x < rightmostX[z.rowIsIn]) {
+				z.isStuck = true;
+			} else {
+				z.isStuck = false;
+			}
+		}
 	}
 
 	private void checkPotatoCharge() {
@@ -607,14 +642,11 @@ public class MainGame implements ActionListener {
 		// goes through each zombie and moves them
 		for (int i = 0; i < zList.size(); i++) {
 			Zombie z = zList.get(i);
-			// x is AN INT value and therefore, double speed change values are troublesome
-			// as
-			// they might just get rounded down (as happens upon casting) and not actually
-			// change the speed
-			// TODO maybe make a double xx value that compliments x to act as a middle
-			// ground between moving it a double speed each second
-			z.xx -= z.speed;
-			z.x = (int) Math.round(z.xx);
+			// if zombie is not stuck at a plant, move it
+			if (!z.isStuck) {
+				z.xx -= z.speed;
+				z.x = (int) Math.round(z.xx);
+			}
 
 			// if the zombie is dead, then it removes it from the list
 			if (z.health <= 0) {
