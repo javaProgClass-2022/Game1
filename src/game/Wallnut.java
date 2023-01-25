@@ -4,6 +4,7 @@ class Wallnut extends Plant {
 	private static final long serialVersionUID = -3255394878231110366L;
 
 	Wallnut() {
+		cost = 50;
 		// FIXME get position of plant
 		width = (MainGame.HIGHX - MainGame.LOWX) % 5;
 		height = (MainGame.HIGHY - MainGame.LOWY) % 9;

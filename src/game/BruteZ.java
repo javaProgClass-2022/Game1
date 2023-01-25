@@ -5,7 +5,7 @@ public class BruteZ extends Zombie {
 
 	BruteZ(int rowIsIn) {
 		health = 50;
-		speed = 0.5;
+		speed = 0.25;
 		damage = 2;
 		height = 190;
 		width = 200;
