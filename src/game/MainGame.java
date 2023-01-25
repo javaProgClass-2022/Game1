@@ -40,8 +40,8 @@ public class MainGame implements ActionListener {
 
 	// plant photos
 	final static BufferedImage PEASHOOTER = loadImage("Photos/Plants/peashooter.png");
-	final static BufferedImage POTATOMINE = loadImage("Photos/Plants/potatomine/potatomine2.png");
-	final static BufferedImage POTATOMINECHARGING = loadImage("Photos/Plants/potatomine/potatomine1.png");
+	final static BufferedImage POTATOMINE = loadImage("Photos/Plants/potatomine/potatomine1.png");
+	final static BufferedImage POTATOMINECHARGING = loadImage("Photos/Plants/potatomine/potatomine2.png");
 	final static BufferedImage SNOWPEA = loadImage("Photos/Plants/snowpea.png");
 	final static BufferedImage SUNFLOWER = loadImage("Photos/Plants/sunflower.png");
 	final static BufferedImage WALLNUT1 = loadImage("Photos/Plants/wallnut/wallnut1.png");
@@ -365,11 +365,6 @@ public class MainGame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		t++;
-		createandmoveZombies();
-		triggerMower();
-		shootandmovePeas();
-		plantZombieIntersect();
-		checkPotatoCharge();
 		// when the amount of zombies are 0, it increases the level
 		// and reinstates the zombies
 		if (zCount < 0 && playerStatus) {
@@ -404,18 +399,6 @@ public class MainGame implements ActionListener {
 			// when the amount of zombies are 0, it increases the level and reinstates the
 			// zombies
 			shootandmovePeas();
-			plantZombieIntersect();
-			checkPotatoCharge();
-			// every plant, if allowed, shoots
-			if (t % 150 == 0) {
-				for (int y = 0; y < board.length; y++) {
-					for (int x = 0; x < board[y].length; x++) {
-						if (board[y][x] != null) {
-							board[y][x].shoot(y, x);
-						}
-					}
-				}
-			}
 			sun += 0.0025;
 		}
 
@@ -487,9 +470,7 @@ public class MainGame implements ActionListener {
 		}
 		// take the normal pea list and if any of it intersects with any zombie, make
 		// the latter take damage
-		for (
-
-				int i = 0; i < normalPeaList.size(); i++) {
+		for (int i = 0; i < normalPeaList.size(); i++) {
 			PeaProjectile pea = normalPeaList.get(i);
 			for (int j = 0; j < zList.size(); j++) {
 				Zombie zomb = zList.get(j);
