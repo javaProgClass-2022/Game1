@@ -314,6 +314,8 @@ public class MainGame implements ActionListener {
 		shootandmovePeas();
 		plantZombieIntersect();
 		checkPotatoCharge();
+		checkSunOnScreen();
+		sunFlowerCheck();
 		// when the amount of zombies are 0, it increases the level and reinstates the
 		// zombies
 		if (zCount < 0 && playerStatus) {
