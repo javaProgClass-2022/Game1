@@ -293,6 +293,7 @@ public class MainGame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		t++;
 		createandmoveZombies();
+		seeIfZombieStuck();
 		triggerMower();
 		shootandmovePeas();
 
@@ -303,6 +304,32 @@ public class MainGame implements ActionListener {
 			zCount = level * 10;
 		}
 		panelGame.repaint();
+	}
+
+	void seeIfZombieStuck() {
+		// for every row, finds the rightmost x value encompassed by the plant
+		int rightmostX[] = new int[board.length];
+		for (int y = 0; y < board.length; y++) {
+			for (int x = 0; x < board[y].length; x++) {
+				Plant p = board[y][x];
+				if (p == null) {
+					continue;
+				}
+				if (p.x + colW > rightmostX[y]) {
+					rightmostX[y] = p.x + colW;
+				}
+			}
+		}
+
+		// if zombie's x reached this rightmost value (of respective row), then zombie
+		// gets stuck, otherwise is unstuck
+		for (Zombie z : zList) {
+			if (z.x < rightmostX[z.rowIsIn]) {
+				z.isStuck = true;
+			} else {
+				z.isStuck = false;
+			}
+		}
 	}
 
 	void shootandmovePeas() {
