@@ -308,26 +308,36 @@ public class MainGame implements ActionListener {
 				if (row >= 0 && row < 5 && col >= 0 && col < 9) {
 					if (selectedPlants[0] && board[row][col] == null && sun >= 100) {
 						board[row][col] = new Peashooter();
+						board[row][col].x = col * COLW + LOWX;
+						board[row][col].y = row * ROWH + LOWY;
 						sun -= 100;
 						selectedPlants[0] = false;
 					}
 					if (selectedPlants[1] && board[row][col] == null && sun >= 175) {
 						board[row][col] = new SnowPea();
+						board[row][col].x = col * COLW + LOWX;
+						board[row][col].y = row * ROWH + LOWY;
 						sun -= 175;
 						selectedPlants[1] = false;
 					}
 					if (selectedPlants[2] && board[row][col] == null && sun >= 50) {
 						board[row][col] = new Sunflower();
+						board[row][col].x = col * COLW + LOWX;
+						board[row][col].y = row * ROWH + LOWY;
 						sun -= 50;
 						selectedPlants[2] = false;
 					}
 					if (selectedPlants[3] && board[row][col] == null && sun >= 50) {
 						board[row][col] = new Wallnut();
+						board[row][col].x = col * COLW + LOWX;
+						board[row][col].y = row * ROWH + LOWY;
 						sun -= 50;
 						selectedPlants[3] = false;
 					}
 					if (selectedPlants[4] && board[row][col] == null && sun >= 25) {
 						board[row][col] = new PotatoMine();
+						board[row][col].x = col * COLW + LOWX;
+						board[row][col].y = row * ROWH + LOWY;
 						sun -= 25;
 						selectedPlants[4] = false;
 					}
@@ -420,7 +430,7 @@ public class MainGame implements ActionListener {
 		panel.repaint();
 	}
 
-	private void checkPotatoCharge() {
+	void checkPotatoCharge() {
 		for (int y = 0; y < board.length; y++) {
 			for (int x = 0; x < board[y].length; x++) {
 				if (board[y][x] instanceof PotatoMine) {
@@ -434,7 +444,7 @@ public class MainGame implements ActionListener {
 		}
 	}
 
-	public void checkSunOnScreen() {
+	void checkSunOnScreen() {
 		for (Sun sunny : sunList) {
 			sunny.timeRemaining--;
 			if (sunny.timeRemaining < 0)
@@ -443,7 +453,7 @@ public class MainGame implements ActionListener {
 		}
 	}
 
-	public void sunFlowerCheck() {
+	void sunFlowerCheck() {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {
 				if (board[i][j] instanceof Sunflower) {
@@ -457,7 +467,7 @@ public class MainGame implements ActionListener {
 	}
 
 	// creates sun, generates a random sun on screen and adds it to the sun list
-	public void createSun() {
+	void createSun() {
 		int x = (int) (Math.random() * PANW);
 		int y = (int) (Math.random() * PANH - 150);
 		Sun sun = new Sun();
@@ -528,13 +538,15 @@ public class MainGame implements ActionListener {
 	void plantZombieIntersect() {
 		// if zombie intersects plant, stops and plant takes damage every second
 		for (int x = 0; x < board.length; x++) {
-			for (int i = 0; i < board.length; i++) {
+			for (int i = 0; i < board[x].length; i++) {
 				if (board[x][i] == null) {
 					continue;
 				}
 				Plant currentPlant = board[x][i];
 				for (int j = 0; j < zList.size(); j++) {
 					Zombie zomb = zList.get(j);
+					if (zomb.rowIsIn != x)
+						continue;
 					if (!currentPlant.intersects(zomb)) {
 						if (zomb instanceof BasicZ) {
 							zomb.speed = 0.66;

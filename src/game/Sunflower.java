@@ -8,9 +8,8 @@ class Sunflower extends Plant {
 
 	Sunflower() {
 		cost = 50;
-		// FIXME get position of plant
-		width = (MainGame.HIGHX - MainGame.LOWX) % 5;
-		height = (MainGame.HIGHY - MainGame.LOWY) % 9;
+		width = MainGame.COLW;
+		height = MainGame.ROWH;
 		health = 10;
 		img = MainGame.SUNFLOWER;
 		startTime = MainGame.t;

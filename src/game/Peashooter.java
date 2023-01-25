@@ -5,9 +5,8 @@ class Peashooter extends Plant {
 	static int side = 25;
 	Peashooter() {
 		cost = 100;
-		// FIXME get position of plant
-		width = (MainGame.HIGHX - MainGame.LOWX) % 5;
-		height = (MainGame.HIGHY - MainGame.LOWY) % 9;
+		width = MainGame.COLW;
+		height = MainGame.ROWH;
 		health = 10;
 		img = MainGame.PEASHOOTER;
 		startTime = MainGame.t;
