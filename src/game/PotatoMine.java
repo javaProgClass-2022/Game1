@@ -8,6 +8,7 @@ class PotatoMine extends Plant {
 	boolean charged;
 
 	PotatoMine() {
+		cost = 25;
 		health = 1;
 		startTime = MainGame.t;
 		this.chargeAmount = 0;
