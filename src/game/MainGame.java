@@ -151,21 +151,21 @@ public class MainGame implements ActionListener {
 			g.setColor(Color.white);
 			g.drawImage(BKG1, 0, 150, getWidth(), 650, null);
 			g.drawImage(SELECTOR, 0, 0, getWidth(), 150, null);
-			g.drawImage(PEASHOOTER, 280, 0, 100, 120, null);
 			g.setFont(new Font("Consolas", Font.PLAIN, 18));
-			g.drawString("100", 330, 142);
-			g.drawString("175", 530, 142);
-			g.drawImage(SNOWPEA, 480, 0, 100, 120, null);
-			g.drawString("50", 725, 142);
-			g.drawImage(SUNFLOWER, 675, 0, 100, 120, null);
-			g.drawString("50", 920, 142);
-			g.drawImage(WALLNUT1, 875, 0, 100, 120, null);
-			g.drawString("25", 1125, 142);
-			g.drawImage(POTATOMINE, 1075, 0, 100, 120, null);
-			g.drawImage(SUNIMG, 10, 0, 150, 150, null);
+			g.drawImage(PEASHOOTER, 300, 15, 90, 100, null);
+			g.drawString("100", 330, 130);
+			g.drawImage(SNOWPEA, 500, 15, 90, 100, null);
+			g.drawString("175", 530, 130);
+			g.drawImage(SUNFLOWER, 690, 15, 90, 100, null);
+			g.drawString("50", 725, 130);
+			g.drawImage(WALLNUT1, 880, 15, 90, 100, null);
+			g.drawString("50", 920, 130);
+			g.drawImage(POTATOMINE, 1090, 15, 90, 100, null);
+			g.drawString("25", 1125, 130);
+			g.drawImage(SUNIMG, 25, 15, 120, 120, null);
 			g.setFont(new Font("Consolas", Font.BOLD, 36));
-			g.drawString(((int) sun + ""), 170, 85);
-			g.drawString(Integer.toString(level), (PANW - 30), 30);
+			g.drawString(((int) sun + ""), 140, 85);
+			g.drawString("Level " + Integer.toString(level), (PANW - 200), 50);
 			g.drawImage(SHOVEL, 20, (PANH - 120), 80, 80, null);
 
 			drawPlants(g);
@@ -625,7 +625,7 @@ public class MainGame implements ActionListener {
 
 			// decreases the zombie count when one is created
 			zCount--;
-			zombieInterval *= 0.99;
+			zombieInterval *= 0.999;
 		}
 
 		// goes through each zombie and moves them
