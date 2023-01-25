@@ -562,6 +562,14 @@ public class MainGame implements ActionListener {
 					zomb.speed = 0;
 					if (t % 60 == 0) {
 						currentPlant.takeDamage(zomb);
+						if (currentPlant instanceof Wallnut) {
+							if (currentPlant.health <= 20) {
+								currentPlant.img = MainGame.WALLNUT2;
+							}
+							if (currentPlant.health <= 10) {
+								currentPlant.img = MainGame.WALLNUT3;
+							}
+						}
 						if (currentPlant.health <= 0) { // Removes plant if it dies
 							board[x][i] = null;
 						}

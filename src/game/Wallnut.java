@@ -9,21 +9,10 @@ class Wallnut extends Plant {
 		height = MainGame.ROWH;
 		health = 40;
 		startTime = MainGame.t;
-		checkHealth();
+		img = MainGame.WALLNUT1;
 	}
 
 	// Changes images depending on health
-	private void checkHealth() {
-		if (this.health > 20) {
-			img = MainGame.WALLNUT1;
-		}
-		if (this.health <= 20) {
-			img = MainGame.WALLNUT2;
-		}
-		if (this.health <= 10) {
-			img = MainGame.WALLNUT3;
-		}
-	}
 
 	@Override
 	void takeDamage(Zombie zomb) {
