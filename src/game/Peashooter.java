@@ -4,8 +4,8 @@ class Peashooter extends Plant {
 	private static final long serialVersionUID = 4371182833899103646L;
 	static int side = 25;
 	Peashooter() {
-		width = (MainGame.HIGHX - MainGame.LOWX) % 5;
-		height = (MainGame.HIGHY - MainGame.LOWY) % 9;
+		width = MainGame.COLW;
+		height = MainGame.ROWH;
 		health = 10;
 		img = MainGame.PEASHOOTER;
 		startTime = MainGame.t;
