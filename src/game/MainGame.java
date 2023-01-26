@@ -546,18 +546,13 @@ public class MainGame implements ActionListener {
 					if (zomb.rowIsIn != x)
 						continue;
 					if (!currentPlant.intersects(zomb)) {
-						if (zomb instanceof BasicZ) {
-							zomb.speed = 0.50;
-						}
-						if (zomb instanceof BruteZ) {
-							zomb.speed = 0.25;
-						}
-						if (zomb instanceof FastZ) {
-							zomb.speed = 1.75;
-						}
+						zomb.isStuck = false;
 						continue;
 					}
-					zomb.speed = 0;
+					if (x != zomb.rowIsIn) {
+						continue;
+					}
+					zomb.isStuck = true;
 					if (t % 60 == 0) {
 						currentPlant.takeDamage(zomb);
 						if (currentPlant instanceof Wallnut) {
@@ -655,8 +650,10 @@ public class MainGame implements ActionListener {
 			if (z.isSlowed) {
 				z.speed *= 0.5;
 			}
-			z.xx -= z.speed;
-			z.x = (int) Math.round(z.xx);
+			if (!z.isStuck) {
+				z.xx -= z.speed;
+				z.x = (int) Math.round(z.xx);
+			}
 
 			// if the zombie is dead, then it removes it from the list
 			if (z.health <= 0) {
