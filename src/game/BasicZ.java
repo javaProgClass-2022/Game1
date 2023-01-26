@@ -5,7 +5,7 @@ class BasicZ extends Zombie {
 
 	BasicZ(int rowIsIn) {
 		health = 30;
-		speed = 1;
+		speed = 0.5;
 		damage = 1;
 		height = 170;
 		width = 100;

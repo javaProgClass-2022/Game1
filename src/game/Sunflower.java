@@ -7,9 +7,9 @@ class Sunflower extends Plant {
 	static final int shootInterval = 540;
 
 	Sunflower() {
-		// FIXME get position of plant
-		width = (MainGame.HIGHX - MainGame.LOWX) % 5;
-		height = (MainGame.HIGHY - MainGame.LOWY) % 9;
+		cost = 50;
+		width = MainGame.COLW;
+		height = MainGame.ROWH;
 		health = 10;
 		img = MainGame.SUNFLOWER;
 		startTime = MainGame.t;
@@ -22,7 +22,5 @@ class Sunflower extends Plant {
 
 	@Override
 	void shoot(int row, int col) {
-		// TODO make sun
-		// new Sun();
 	}
 }
