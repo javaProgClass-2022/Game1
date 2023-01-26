@@ -413,7 +413,8 @@ public class MainGame implements ActionListener {
 		} else {
 			createandmoveZombies();
 			triggerMower();
-			plantZombieIntersect();
+			damagePlantIfBeingHit();
+			seeIfZombieStuck();
 			checkPotatoCharge();
 			shootandmovePeas();
 			checkSunOnScreen();
@@ -421,6 +422,32 @@ public class MainGame implements ActionListener {
 		}
 
 		panel.repaint();
+	}
+
+	void seeIfZombieStuck() {
+		// for every row, finds the rightmost x value encompassed by the plant
+		int rightmostX[] = new int[board.length];
+		for (int y = 0; y < board.length; y++) {
+			for (int x = 0; x < board[y].length; x++) {
+				Plant p = board[y][x];
+				if (p == null) {
+					continue;
+				}
+				if (p.x + COLW > rightmostX[y]) {
+					rightmostX[y] = p.x + COLW;
+				}
+			}
+		}
+
+		// if zombie's x reached this rightmost value (of respective row), then zombie
+		// gets stuck, otherwise is unstuck
+		for (Zombie z : zList) {
+			if (z.x < rightmostX[z.rowIsIn]) {
+				z.isStuck = true;
+			} else {
+				z.isStuck = false;
+			}
+		}
 	}
 
 	void checkPotatoCharge() {
@@ -533,7 +560,7 @@ public class MainGame implements ActionListener {
 		return img;
 	}
 
-	void plantZombieIntersect() {
+	void damagePlantIfBeingHit() {
 		// if zombie intersects plant, stops and plant takes damage every second
 		for (int x = 0; x < board.length; x++) {
 			for (int i = 0; i < board[x].length; i++) {
@@ -543,14 +570,7 @@ public class MainGame implements ActionListener {
 				Plant currentPlant = board[x][i];
 				for (int j = 0; j < zList.size(); j++) {
 					Zombie zomb = zList.get(j);
-					if (zomb.rowIsIn != x)
-						continue;
-					if (!currentPlant.intersects(zomb)) {
-						zomb.isStuck = false;
-						continue;
-					}
-					zomb.isStuck = true;
-					if (t % 60 == 0) {
+					if (t % 60 == 0 && x == zomb.rowIsIn && currentPlant.intersects(zomb)) {
 						currentPlant.takeDamage(zomb);
 						if (currentPlant instanceof Wallnut) {
 							if (currentPlant.health <= 20) {
