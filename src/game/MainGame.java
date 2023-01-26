@@ -667,7 +667,7 @@ public class MainGame implements ActionListener {
 
 			if (!z.isStuck) {
 				if (z.isSlowed) {
-					z.speed *= 0.5;
+					z.speed *= 0.66;
 				}
 				z.xx -= z.speed;
 				z.x = (int) Math.round(z.xx);
