@@ -11,6 +11,8 @@ class BasicZ extends Zombie {
 		width = 100;
 		if (this.isSlowed) {
 			img = MainGame.BASICZSLOW;
+		} else {
+			img = MainGame.BASICZ;
 		}
 		this.rowIsIn = rowIsIn;
 	}
