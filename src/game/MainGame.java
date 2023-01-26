@@ -453,7 +453,7 @@ public class MainGame implements ActionListener {
 			for (int j = 0; j < board[i].length; j++) {
 				if (board[i][j] instanceof Sunflower) {
 					board[i][j].startTime++;
-					if (board[i][j].startTime % 480 == 0) {
+					if (board[i][j].startTime % 500 == 0) {
 						Sun sun = new Sun();
 						sun.x = (j * 86 + 260);
 						sun.y = (i * 108 + 230);
@@ -547,7 +547,7 @@ public class MainGame implements ActionListener {
 						continue;
 					if (!currentPlant.intersects(zomb)) {
 						if (zomb instanceof BasicZ) {
-							zomb.speed = 0.66;
+							zomb.speed = 0.50;
 						}
 						if (zomb instanceof BruteZ) {
 							zomb.speed = 0.25;
@@ -643,7 +643,7 @@ public class MainGame implements ActionListener {
 
 			// decreases the zombie count when one is created
 			zCount--;
-			zombieInterval *= 0.999;
+			zombieInterval *= 0.996;
 		}
 
 		// goes through each zombie and moves them
