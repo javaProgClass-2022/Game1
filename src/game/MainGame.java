@@ -420,7 +420,6 @@ public class MainGame implements ActionListener {
 			checkSunOnScreen();
 			sunFlowerCheck();
 		}
-
 		panel.repaint();
 	}
 
@@ -665,7 +664,15 @@ public class MainGame implements ActionListener {
 			// as they might just get rounded down (as happens upon casting) and not
 			// actually change the speed
 			if (z.isSlowed) {
-				z.speed *= 0.5;
+				if (z instanceof BasicZ) {
+					z.speed = 0.25;
+				}
+				if (z instanceof FastZ) {
+					z.speed = 0.88;
+				}
+				if (z instanceof BruteZ) {
+					z.speed = 0.13;
+				}
 			}
 			if (!z.isStuck) {
 				z.xx -= z.speed;
