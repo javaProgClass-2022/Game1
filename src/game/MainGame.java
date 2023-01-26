@@ -654,7 +654,7 @@ public class MainGame implements ActionListener {
 
 			// decreases the zombie count when one is created
 			zCount--;
-			zombieInterval *= 0.996;
+			zombieInterval *= 0.995;
 		}
 
 		// goes through each zombie and moves them
@@ -663,6 +663,7 @@ public class MainGame implements ActionListener {
 			// x is AN INT value and therefore, double speed change values are troublesome
 			// as they might just get rounded down (as happens upon casting) and not
 			// actually change the speed
+<<<<<<< HEAD
 			if (z.isSlowed) {
 				if (z instanceof BasicZ) {
 					z.speed = 0.25;
@@ -674,7 +675,13 @@ public class MainGame implements ActionListener {
 					z.speed = 0.13;
 				}
 			}
+=======
+
+>>>>>>> Lucas3
 			if (!z.isStuck) {
+				if (z.isSlowed) {
+					z.speed *= 0.5;
+				}
 				z.xx -= z.speed;
 				z.x = (int) Math.round(z.xx);
 			}
