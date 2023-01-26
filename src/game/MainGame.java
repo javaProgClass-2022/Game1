@@ -102,12 +102,6 @@ public class MainGame implements ActionListener {
 	// constructor
 	MainGame() {
 		// FIXME DEBUG
-		board[0][0] = new Peashooter();
-		board[1][0] = new SnowPea();
-		board[2][0] = new Wallnut();
-		board[3][0] = new Sunflower();
-		board[4][0] = new PotatoMine();
-		board[0][3] = new Sunflower();
 
 		createAndShowGUI();
 		lawnMowerCreation();
@@ -375,6 +369,7 @@ public class MainGame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		t++;
+		System.out.println(t);
 		// when the amount of zombies are 0, it increases the level
 		// and reinstates the zombies
 		if (zCount < 0 && playerStatus) {
@@ -532,22 +527,15 @@ public class MainGame implements ActionListener {
 					if (zomb.rowIsIn != x)
 						continue;
 					if (!currentPlant.intersects(zomb)) {
-						if (zomb instanceof BasicZ) {
-							zomb.speed = 1;
-						}
-						if (zomb instanceof BruteZ) {
-							zomb.speed = 0.5;
-						}
-						if (zomb instanceof FastZ) {
-							zomb.speed = 2;
-						}
+						zomb.isStuck = false;
 						continue;
-					}
-					zomb.speed = 0;
-					if (t % 60 == 0) {
-						currentPlant.takeDamage(zomb);
-						if (currentPlant.health <= 0) { // Removes plant if it dies
-							board[x][i] = null;
+					} else {
+						zomb.isStuck = true;
+						if (t % 60 == 0) {
+							currentPlant.takeDamage(zomb);
+							if (currentPlant.health <= 0) { // Removes plant if it dies
+								board[x][i] = null;
+							}
 						}
 					}
 				}
@@ -633,8 +621,10 @@ public class MainGame implements ActionListener {
 			if (z.isSlowed) {
 				z.speed *= 0.5;
 			}
-			z.xx -= z.speed;
-			z.x = (int) Math.round(z.xx);
+			if (!z.isStuck) {
+				z.xx -= z.speed;
+				z.x = (int) Math.round(z.xx);
+			}
 
 			// if the zombie is dead, then it removes it from the list
 			if (z.health <= 0) {
