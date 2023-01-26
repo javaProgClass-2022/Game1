@@ -420,7 +420,6 @@ public class MainGame implements ActionListener {
 			checkSunOnScreen();
 			sunFlowerCheck();
 		}
-
 		panel.repaint();
 	}
 
@@ -664,7 +663,17 @@ public class MainGame implements ActionListener {
 			// x is AN INT value and therefore, double speed change values are troublesome
 			// as they might just get rounded down (as happens upon casting) and not
 			// actually change the speed
-
+			if (z.isSlowed) {
+				if (z instanceof BasicZ) {
+					z.speed = 0.25;
+				}
+				if (z instanceof FastZ) {
+					z.speed = 0.88;
+				}
+				if (z instanceof BruteZ) {
+					z.speed = 0.13;
+				}
+			}
 			if (!z.isStuck) {
 				if (z.isSlowed) {
 					z.speed *= 0.66;
