@@ -104,13 +104,6 @@ public class MainGame implements ActionListener {
 
 	// constructor
 	MainGame() {
-		// FIXME DEBUG
-		board[0][0] = new Peashooter();
-		board[1][0] = new SnowPea();
-		board[2][0] = new Wallnut();
-		board[3][0] = new Sunflower();
-		board[4][0] = new PotatoMine();
-
 		createAndShowGUI();
 		lawnMowerCreation();
 		startTimer();
@@ -268,8 +261,7 @@ public class MainGame implements ActionListener {
 		public void mouseClicked(MouseEvent e) {
 			int x = e.getX();
 			int y = e.getY();
-
-			for (Sun sunny : sunList) { // FIXME, I don't work properly
+			for (Sun sunny : sunList) {
 				if (x >= sunny.x - sunny.width && x <= sunny.x + sunny.width && y >= sunny.y - sunny.height
 						&& y <= sunny.y + sunny.height) {
 					sun += sunIncrement;
@@ -387,17 +379,11 @@ public class MainGame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		t++;
-		createandmoveZombies();
-		triggerMower();
-		plantZombieIntersect();
-		checkPotatoCharge();
-		// when the amount of zombies are 0, it increases the level and reinstates the
-		// zombies
-		shootandmovePeas();
-		plantZombieIntersect();
-		checkPotatoCharge();
-		checkSunOnScreen();
-		sunFlowerCheck();
+
+		if (t % 900 == 0) {
+			createSun();
+		}
+
 		// when the amount of zombies are 0, it increases the level and reinstates the
 		// zombies
 		if (zCount < 0 && playerStatus) {
@@ -429,14 +415,10 @@ public class MainGame implements ActionListener {
 			triggerMower();
 			plantZombieIntersect();
 			checkPotatoCharge();
-			// when the amount of zombies are 0, it increases the level and reinstates the
-			// zombies
 			shootandmovePeas();
+			checkSunOnScreen();
+			sunFlowerCheck();
 		}
-
-		// Increases sun every 6 seconds
-		if (t % 360 == 0)
-			sun += 25;
 
 		panel.repaint();
 	}
@@ -458,8 +440,10 @@ public class MainGame implements ActionListener {
 	void checkSunOnScreen() {
 		for (Sun sunny : sunList) {
 			sunny.timeRemaining--;
-			if (sunny.timeRemaining < 0)
+			if (sunny.timeRemaining < 0) {
+				sun += 25;
 				sunList.remove(sunny);
+			}
 			break;
 		}
 	}
@@ -469,8 +453,11 @@ public class MainGame implements ActionListener {
 			for (int j = 0; j < board[i].length; j++) {
 				if (board[i][j] instanceof Sunflower) {
 					board[i][j].startTime++;
-					if (board[i][j].startTime % 2000 == 0) {
-						createSun();
+					if (board[i][j].startTime % 480 == 0) {
+						Sun sun = new Sun();
+						sun.x = (j * 86 + 260);
+						sun.y = (i * 108 + 230);
+						sunList.add(sun);
 					}
 				}
 			}
@@ -480,7 +467,7 @@ public class MainGame implements ActionListener {
 	// creates sun, generates a random sun on screen and adds it to the sun list
 	void createSun() {
 		int x = (int) (Math.random() * PANW);
-		int y = (int) (Math.random() * PANH - 150);
+		int y = (int) ((Math.random() * (PANH - 150)) + 150);
 		Sun sun = new Sun();
 		sun.x = x;
 		sun.y = y;

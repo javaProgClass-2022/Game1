@@ -17,7 +17,6 @@ class PotatoMine extends Plant {
 			height = 0;
 		} else {
 			img = MainGame.POTATOMINE;
-			// FIXME get position of plant
 			width = MainGame.COLW;
 			height = MainGame.ROWH;
 		}
@@ -25,11 +24,10 @@ class PotatoMine extends Plant {
 
 	@Override
 	void takeDamage(Zombie zomb) {
-		if (!charged) {
-			return;
+		if (charged) {
+			this.health -= zomb.damage;
+			zomb.health = 0;
 		}
-		zomb.health = 0;
-		this.health -= 1;
 	}
 
 	@Override

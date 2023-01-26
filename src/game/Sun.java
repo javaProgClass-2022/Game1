@@ -9,7 +9,7 @@ public class Sun extends Rectangle {
 	BufferedImage img = MainGame.loadImage("Photos/Misc/sun.png");
 	
 	Sun() {
-		timeRemaining = 2000;
+		timeRemaining = 1200;
 		width = 100;
 		height = 100;
 	}
