@@ -5,7 +5,7 @@ public class FastZ extends Zombie {
 
 	FastZ(int rowIsIn) {
 		health = 20;
-		speed = 2;
+		speed = 1.75;
 		damage = 1;
 		height = 150;
 		width = 100;

@@ -4,26 +4,15 @@ class Wallnut extends Plant {
 	private static final long serialVersionUID = -3255394878231110366L;
 
 	Wallnut() {
-		// FIXME get position of plant
-		width = (MainGame.HIGHX - MainGame.LOWX) % 5;
-		height = (MainGame.HIGHY - MainGame.LOWY) % 9;
+		cost = 50;
+		width = MainGame.COLW;
+		height = MainGame.ROWH;
 		health = 40;
 		startTime = MainGame.t;
-		checkHealth();
+		img = MainGame.WALLNUT1;
 	}
 
 	// Changes images depending on health
-	private void checkHealth() {
-		if (this.health > 20) {
-			img = MainGame.WALLNUT1;
-		}
-		if (this.health <= 20) {
-			img = MainGame.WALLNUT2;
-		}
-		if (this.health <= 10) {
-			img = MainGame.WALLNUT3;
-		}
-	}
 
 	@Override
 	void takeDamage(Zombie zomb) {

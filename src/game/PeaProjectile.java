@@ -8,7 +8,7 @@ class PeaProjectile extends Rectangle {
 	
 	static int velocity = 3;
 	static int damage = 10;
-	BufferedImage img = MainGame.loadImage("Photos/Peas/pea.png");
+	BufferedImage img = MainGame.PEAPROJECTILE;
 
 	PeaProjectile(int x, int y) {
 		width = 25;

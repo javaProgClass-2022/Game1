@@ -5,9 +5,9 @@ class PotatoMine extends Plant {
 
 	static final int damage = 10000;
 	int chargeAmount;
-	boolean charged;
 
 	PotatoMine() {
+		cost = 25;
 		health = 1;
 		startTime = MainGame.t;
 		this.chargeAmount = 0;
@@ -18,8 +18,8 @@ class PotatoMine extends Plant {
 		} else {
 			img = MainGame.POTATOMINE;
 			// FIXME get position of plant
-			width = (MainGame.HIGHX - MainGame.LOWX) % 5;
-			height = (MainGame.HIGHY - MainGame.LOWY) % 9;
+			width = MainGame.COLW;
+			height = MainGame.ROWH;
 		}
 	}
 
