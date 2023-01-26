@@ -334,7 +334,9 @@ public class MainGame implements ActionListener {
 						selectedPlants[4] = false;
 					}
 					if (selectedPlants[5]) {
-						sun += board[row][col].cost;
+						if (board[row][col] != null) {
+							sun += board[row][col].cost;
+						}
 						board[row][col] = null;
 						selectedPlants[5] = false;
 					}
