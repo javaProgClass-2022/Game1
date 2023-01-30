@@ -392,9 +392,7 @@ public class MainGame implements ActionListener {
 			level++;
 			zCount = level * 10;
 			nextLevelScreen = true;
-			for (int i = 0; i < zList.size(); i++) {
-				zList.remove(i);
-			}
+			zList.clear();
 			t = 0;
 		}
 		if (t <= SCREENTIME) {
@@ -405,9 +403,7 @@ public class MainGame implements ActionListener {
 					level = 0;
 					playerStatus = true;
 					lawnMowerCreation();
-					for (int i = 0; i < zList.size(); i++) {
-						zList.remove(i);
-					}
+					zList.clear();
 					createandmoveZombies();
 				} else
 					start = false;
